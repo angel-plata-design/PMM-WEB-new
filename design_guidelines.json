@@ -1,0 +1,102 @@
+{
+  "theme": "dark",
+  "archetype": "5 (Jewel & Luxury) mixed with 4 (Swiss & High-Contrast)",
+  "vibe": "Premium, Cinematic, Editorial, Mexican Pride, Industrial",
+  "colors": {
+    "background": {
+      "base": "#0A0A0A",
+      "surface": "#171717",
+      "surface_elevated": "#262626",
+      "glass": "bg-black/60 backdrop-blur-xl"
+    },
+    "primary": {
+      "DEFAULT": "#E30613",
+      "hover": "#FF1A27",
+      "foreground": "#FFFFFF"
+    },
+    "text": {
+      "primary": "#FFFFFF",
+      "secondary": "#A1A1AA",
+      "muted": "#71717A",
+      "accent": "#E30613"
+    },
+    "border": {
+      "DEFAULT": "#27272A",
+      "focus": "#E30613"
+    },
+    "status": {
+      "success": "#10B981",
+      "warning": "#F59E0B",
+      "error": "#EF4444"
+    }
+  },
+  "typography": {
+    "fonts": {
+      "heading": "Cormorant Garamond",
+      "body": "Manrope",
+      "mono": "JetBrains Mono"
+    },
+    "scale": {
+      "h1": "text-5xl sm:text-6xl lg:text-7xl font-light tracking-tighter leading-none",
+      "h2": "text-4xl sm:text-5xl lg:text-6xl font-light tracking-tight leading-tight",
+      "h3": "text-2xl sm:text-3xl font-medium tracking-tight",
+      "h4": "text-xl sm:text-2xl font-medium",
+      "body": "text-base lg:text-lg leading-relaxed text-zinc-400",
+      "small": "text-sm text-zinc-500",
+      "overline": "text-xs font-mono uppercase tracking-[0.2em] text-primary"
+    },
+    "rules": {
+      "headings": "Use Cormorant Garamond for all H1/H2 to create an editorial feel. No bold weights for large headers, use light or regular.",
+      "body": "Use Manrope for clean, utilitarian readability.",
+      "accents": "Use JetBrains Mono for tracking numbers, quotes, metric data, and overlines."
+    }
+  },
+  "spacing": {
+    "section": "py-24 md:py-32",
+    "container": "px-6 md:px-12 max-w-7xl mx-auto",
+    "bento_gap": "gap-6 md:gap-8",
+    "internal_pad": "p-8 md:p-12"
+  },
+  "layout_patterns": {
+    "hero": "Full-bleed background (video/image) with a heavy dark overlay (bg-black/60). Text left-aligned or centered, with primary red accent elements. Use 'Transportando Emociones' with pride.",
+    "bento_grid": "Asymmetric grids for services (e.g. 1 hero tile spanning 2 rows, 2 standard tiles). Grid items should have deep dark backgrounds (#171717) and 1px borders (#27272A).",
+    "alternating_sections": "Alternate between pitch black (#0A0A0A) and dark zinc (#171717) to create rhythm.",
+    "forms": "Minimalist 'Control Room' style forms for quoting and tracking. Use JetBrains Mono for inputs, bright red for the submit CTA."
+  },
+  "components": {
+    "navbar": "Glassmorphism (bg-black/60 backdrop-blur-xl). Sticky top. Red CTA button for 'Cotizar'.",
+    "hero": "Cinematic. Overline: 'ORGULLOSAMENTE MEXICANOS'. H1: 'Transportando Emociones, Entregando Confianza.' Dual CTAs: Red solid for Quote, transparent outlined for Track.",
+    "quote_form": "Floating control panel over the hero or just below it. 1px zinc border. Inputs: Origen, Destino, Peso. Strict grid layout.",
+    "service_tiles": "Image mosaic bento grid. Hover effect: image scales slightly, red accent line appears at the bottom.",
+    "stats_block": "Large numbers in Cormorant Garamond (e.g., '30+', '29', '16+'). Mono font for labels (Años de experiencia, Ciudades, Estados).",
+    "footer": "Massive footer. Very dark background. Large PMM logo. Grid columns for links. 'Let's Talk' CTA."
+  },
+  "pages": {
+    "home": "Hero (Video/Image) -> Quick Quote & Tracking Panel -> Stats & Proof Points -> Services Mosaic (B2B/Personas) -> Coverage Map Hook -> SEO Blog Posts -> Footer.",
+    "cobertura": "Dark map visualization. Zip code search bar. List of 29 cities and 16+ states.",
+    "cotizador": "Dedicated large form. Clean, highly functional, no distractions.",
+    "rastreo": "Central input field, large typography. Timeline view for package status.",
+    "servicios": "Detailed breakdown with rich imagery. Tabs for B2B vs Personas.",
+    "blog": "Editorial grid layout. High contrast text.",
+    "sucursales": "List view with LocalBusiness Schema mapping.",
+    "contacto": "Split layout. Form on the left, contact info and map on the right."
+  },
+  "interactions": {
+    "hover": "Subtle translate-y-1 on cards. Buttons scale down slightly on click (active:scale-95).",
+    "transitions": "Use 'transition-all duration-300 ease-out'.",
+    "focus": "focus:ring-2 focus:ring-primary focus:outline-none"
+  },
+  "media": {
+    "hero_background": "https://images.pexels.com/photos/11087837/pexels-photo-11087837.jpeg",
+    "truck_twilight": "https://images.unsplash.com/photo-1775756789951-3f2ef4307258",
+    "warehouse_dark": "https://images.pexels.com/photos/30341205/pexels-photo-30341205.jpeg",
+    "boxes_logistics": "https://images.unsplash.com/photo-1766040923580-16ad32fae8b4",
+    "courier_delivery": "https://images.unsplash.com/photo-1762320723943-527ff68405c3",
+    "coca_cola_truck_mexico_vibe": "https://images.unsplash.com/photo-1680546882156-fbabe4acb54d"
+  },
+  "seo": {
+    "tagline": "Transportando Emociones en todo México",
+    "keywords": ["paquetería", "mensajería", "B2B", "logística", "México", "envíos", "rastreo"],
+    "schema": "Implement LocalBusiness for Sucursales and Organization for the main site."
+  }
+}
