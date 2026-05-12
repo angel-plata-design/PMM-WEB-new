@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
-import { Menu, X, ChevronDown } from "lucide-react";
+import { Menu, X } from "lucide-react";
 
 const navItems = [
   { to: "/servicios/empresas", label: "Empresas" },
@@ -16,35 +16,39 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
+  const onHome = location.pathname === "/";
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20);
+    const onScroll = () => setScrolled(window.scrollY > 80);
     window.addEventListener("scroll", onScroll);
+    onScroll();
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  useEffect(() => {
-    setOpen(false);
-  }, [location.pathname]);
+  useEffect(() => { setOpen(false); }, [location.pathname]);
+
+  // Two states:
+  //  A) On hero (home, not scrolled) -> transparent + white logo + white text
+  //  B) Elsewhere or scrolled -> glass-light bg, blue logo, charcoal text
+  const transparent = onHome && !scrolled;
+
+  const textColor = transparent ? "text-white" : "text-[#2D2D2D]";
+  const textMuted = transparent ? "text-white/70" : "text-[#6B6B6B]";
 
   return (
     <header
       data-testid="main-navbar"
       className={`fixed top-0 inset-x-0 z-50 transition-all duration-500 ${
-        scrolled ? "glass-nav border-b border-white/5" : "bg-transparent"
+        transparent ? "bg-transparent" : "glass-nav"
       }`}
     >
       <div className="container-pmm flex items-center justify-between h-20">
-        <Link to="/" data-testid="logo-link" className="flex items-center gap-2 group">
-          <div className="w-10 h-10 bg-[#E30613] flex items-center justify-center font-display text-2xl text-white tracking-tighter group-hover:rotate-3 transition-transform">
-            P
-          </div>
-          <div className="leading-none">
-            <div className="font-display text-2xl text-white tracking-tight">PMM</div>
-            <div className="text-[9px] font-mono uppercase tracking-[0.25em] text-zinc-500">
-              Transportando emociones
-            </div>
-          </div>
+        <Link to="/" data-testid="logo-link" className="flex items-center group">
+          <img
+            src={transparent ? "/pmm-blanco.svg" : "/pmm-azul.svg"}
+            alt="PMM Paquetería y Mensajería"
+            className="h-9 w-auto transition-opacity duration-300"
+          />
         </Link>
 
         <nav className="hidden lg:flex items-center gap-7">
@@ -54,8 +58,10 @@ export default function Navbar() {
               to={item.to}
               data-testid={`nav-${item.label.toLowerCase().replace(/\s+/g, "-")}`}
               className={({ isActive }) =>
-                `text-[13px] font-medium tracking-wide red-line transition-colors ${
-                  isActive ? "text-white" : "text-zinc-400 hover:text-white"
+                `text-[13px] font-medium tracking-wide nav-underline transition-colors ${
+                  isActive
+                    ? (transparent ? "text-white" : "text-[#1E008D]")
+                    : `${textMuted} hover:${transparent ? "text-white" : "text-[#2D2D2D]"}`
                 }`
               }
             >
@@ -64,18 +70,18 @@ export default function Navbar() {
           ))}
         </nav>
 
-        <div className="hidden lg:flex items-center gap-3">
+        <div className="hidden lg:flex items-center gap-5">
           <Link
             to="/facturacion"
             data-testid="nav-facturacion"
-            className="text-[13px] font-medium text-zinc-400 hover:text-white transition-colors"
+            className={`text-[13px] font-medium transition-colors ${textMuted} hover:${transparent ? "text-white" : "text-[#2D2D2D]"}`}
           >
             Facturación
           </Link>
           <Link
             to="/cotizador"
             data-testid="cta-cotizar-nav"
-            className="bg-[#E30613] hover:bg-[#FF1A27] text-white text-[13px] font-semibold px-5 py-3 transition-all active:scale-95"
+            className="btn-primary text-[13px] font-semibold px-5 py-3"
           >
             Cotizar envío
           </Link>
@@ -84,7 +90,7 @@ export default function Navbar() {
         <button
           onClick={() => setOpen((v) => !v)}
           data-testid="mobile-menu-toggle"
-          className="lg:hidden text-white"
+          className={`lg:hidden ${textColor}`}
           aria-label="Menu"
         >
           {open ? <X size={26} /> : <Menu size={26} />}
@@ -92,23 +98,16 @@ export default function Navbar() {
       </div>
 
       {open && (
-        <div className="lg:hidden glass-nav border-t border-white/5 px-6 py-6 space-y-4">
+        <div className="lg:hidden bg-white border-t border-[#E5E5E5] px-6 py-6 space-y-4">
           {navItems.map((item) => (
-            <Link
-              key={item.to}
-              to={item.to}
-              className="block text-zinc-300 hover:text-white text-base font-medium"
-            >
+            <Link key={item.to} to={item.to} className="block text-[#2D2D2D] hover:text-[#1E008D] text-base font-medium">
               {item.label}
             </Link>
           ))}
-          <Link to="/facturacion" className="block text-zinc-300 hover:text-white text-base font-medium">
+          <Link to="/facturacion" className="block text-[#2D2D2D] hover:text-[#1E008D] text-base font-medium">
             Facturación
           </Link>
-          <Link
-            to="/cotizador"
-            className="block w-full bg-[#E30613] text-white text-center py-3 mt-2 font-semibold"
-          >
+          <Link to="/cotizador" className="block btn-primary text-center py-3 mt-2 font-semibold">
             Cotizar envío
           </Link>
         </div>

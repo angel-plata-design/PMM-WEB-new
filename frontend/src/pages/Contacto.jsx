@@ -26,7 +26,7 @@ export default function Contacto() {
     } finally { setLoading(false); }
   };
 
-  const inputCls = "w-full bg-transparent border-0 border-b border-zinc-700 focus:border-[#E30613] py-3 px-0 text-white placeholder-zinc-600 font-mono text-sm focus:outline-none transition-colors";
+  const inputCls = "w-full bg-transparent border-0 border-b border-[#E5E5E5] focus:border-[#1E008D] py-3 px-0 text-[#2D2D2D] placeholder-[#B8B8B8] font-mono text-sm focus:outline-none transition-colors";
 
   return (
     <>
@@ -37,7 +37,7 @@ export default function Contacto() {
       />
       <PageHeader
         overline="Contacto"
-        title={<>Hablemos<br /><em className="not-italic text-[#E30613]">de tus envíos.</em></>}
+        title={<>Hablemos<br /><em className="not-italic text-[#3DAE2B]">de tus envíos.</em></>}
         description="Déjanos tus datos y un ejecutivo se pondrá en contacto. También puedes escribirnos por WhatsApp o llamarnos directamente."
         breadcrumbs={[{ label: "Contacto" }]}
       />
@@ -45,10 +45,10 @@ export default function Contacto() {
         <div className="container-pmm grid grid-cols-1 lg:grid-cols-12 gap-12">
           <div className="lg:col-span-7">
             {sent ? (
-              <div data-testid="contact-success" className="border border-[#E30613]/40 bg-[#E30613]/5 p-10">
+              <div data-testid="contact-success" className="border border-[#1E008D]/40 bg-[#1E008D]/5 p-10">
                 <div className="text-overline mb-3">¡Gracias!</div>
-                <h3 className="font-display text-4xl text-white mb-3">Recibimos tu mensaje.</h3>
-                <p className="text-zinc-300">Un ejecutivo te contactará en menos de 24 horas hábiles. Si tu solicitud es urgente, escríbenos por WhatsApp.</p>
+                <h3 className="font-display text-4xl text-[#2D2D2D] mb-3">Recibimos tu mensaje.</h3>
+                <p className="text-[#2D2D2D]">Un ejecutivo te contactará en menos de 24 horas hábiles. Si tu solicitud es urgente, escríbenos por WhatsApp.</p>
               </div>
             ) : (
               <form onSubmit={submit} className="space-y-6" data-testid="contact-form">
@@ -69,8 +69,8 @@ export default function Contacto() {
                     <input value={form.peso} onChange={(e) => setForm({ ...form, peso: e.target.value })} placeholder="ej. 200" className={inputCls} /></div>
                   <div><label className="text-overline block mb-3">Tipo de cliente</label>
                     <select value={form.tipo_cliente} onChange={(e) => setForm({ ...form, tipo_cliente: e.target.value })} className={inputCls + " cursor-pointer"}>
-                      <option value="empresas" className="bg-zinc-900">Empresa</option>
-                      <option value="personas" className="bg-zinc-900">Persona</option>
+                      <option value="empresas" className="bg-[#F5F5F5]">Empresa</option>
+                      <option value="personas" className="bg-[#F5F5F5]">Persona</option>
                     </select></div>
                 </div>
                 <div><label className="text-overline block mb-3">Mensaje</label>
@@ -78,7 +78,7 @@ export default function Contacto() {
 
                 {error && <div className="border border-red-500/30 bg-red-500/5 text-red-400 text-sm px-4 py-3 font-mono">{error}</div>}
 
-                <button type="submit" disabled={loading} data-testid="contact-submit" className="inline-flex items-center gap-3 bg-[#E30613] hover:bg-[#FF1A27] text-white px-8 py-5 font-semibold transition-all active:scale-95 disabled:opacity-60">
+                <button type="submit" disabled={loading} data-testid="contact-submit" className="inline-flex items-center gap-3 bg-[#1E008D] hover:bg-[#2A0FB0] text-[#2D2D2D] px-8 py-5 font-semibold transition-all active:scale-95 disabled:opacity-60">
                   {loading ? <Loader2 className="animate-spin" size={18} /> : "Enviar solicitud"}
                 </button>
               </form>
@@ -86,23 +86,23 @@ export default function Contacto() {
           </div>
 
           <div className="lg:col-span-5 space-y-8">
-            <div className="border border-white/10 p-8">
+            <div className="border border-[#E5E5E5] p-8">
               <div className="text-overline mb-3">Atención general</div>
               <div className="space-y-4 mt-4">
-                <a href="tel:+528007666666" className="flex items-center gap-3 text-white hover:text-[#E30613]"><Phone size={18} /> 800 PMM (766-6666)</a>
-                <a href="mailto:atencion@pmm.com.mx" className="flex items-center gap-3 text-white hover:text-[#E30613]"><Mail size={18} /> atencion@pmm.com.mx</a>
-                <a href="https://wa.me/525555555555" target="_blank" rel="noreferrer" className="flex items-center gap-3 text-white hover:text-[#E30613]"><MessageCircle size={18} /> WhatsApp directo</a>
+                <a href="tel:+528007666666" className="flex items-center gap-3 text-[#2D2D2D] hover:text-[#1E008D]"><Phone size={18} /> 800 PMM (766-6666)</a>
+                <a href="mailto:atencion@pmm.com.mx" className="flex items-center gap-3 text-[#2D2D2D] hover:text-[#1E008D]"><Mail size={18} /> atencion@pmm.com.mx</a>
+                <a href="https://wa.me/525555555555" target="_blank" rel="noreferrer" className="flex items-center gap-3 text-[#2D2D2D] hover:text-[#1E008D]"><MessageCircle size={18} /> WhatsApp directo</a>
               </div>
             </div>
-            <div className="border border-white/10 p-8">
+            <div className="border border-[#E5E5E5] p-8">
               <div className="text-overline mb-3">Cobertura</div>
-              <div className="flex items-center gap-3 text-zinc-300 mt-4"><MapPin size={18} className="text-[#E30613]" /> 16+ estados · 29+ ciudades</div>
-              <p className="text-zinc-500 text-sm mt-3">Si tu zona aún no aparece en cobertura, escríbenos para evaluar rutas especiales B2B.</p>
+              <div className="flex items-center gap-3 text-[#2D2D2D] mt-4"><MapPin size={18} className="text-[#1E008D]" /> 16+ estados · 29+ ciudades</div>
+              <p className="text-[#6B6B6B] text-sm mt-3">Si tu zona aún no aparece en cobertura, escríbenos para evaluar rutas especiales B2B.</p>
             </div>
-            <div className="border border-[#E30613] bg-[#E30613]/10 p-8">
+            <div className="border border-[#1E008D] bg-[#1E008D]/10 p-8">
               <div className="text-overline mb-3">Soporte fiscal</div>
-              <a href="mailto:facturacion@pmm.com.mx" className="text-white text-lg font-medium hover:underline">facturacion@pmm.com.mx</a>
-              <p className="text-zinc-300 text-sm mt-2">Aclaraciones, complementos de pago y cambios de uso de CFDI.</p>
+              <a href="mailto:facturacion@pmm.com.mx" className="text-[#2D2D2D] text-lg font-medium hover:underline">facturacion@pmm.com.mx</a>
+              <p className="text-[#2D2D2D] text-sm mt-2">Aclaraciones, complementos de pago y cambios de uso de CFDI.</p>
             </div>
           </div>
         </div>

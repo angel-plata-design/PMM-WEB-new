@@ -20,7 +20,7 @@ export default function GuiasPrepagadas() {
       />
       <PageHeader
         overline="Guías Prepagadas"
-        title={<>Impulsa tus ventas<br /><em className="not-italic text-[#E30613]">con precios fijos.</em></>}
+        title={<>Impulsa tus ventas<br /><em className="not-italic text-[#3DAE2B]">con precios fijos.</em></>}
         description="Adquiere paquetes de guías PMM a precios preferenciales. Genera, etiqueta y entrega — sin sorpresas de tarifa."
         breadcrumbs={[{ label: "Guías Prepagadas" }]}
         image="https://images.unsplash.com/photo-1766040923580-16ad32fae8b4"
@@ -31,28 +31,28 @@ export default function GuiasPrepagadas() {
             <div
               key={p.name}
               data-testid={`plan-${p.name.toLowerCase()}`}
-              className={`relative border p-8 md:p-10 hover-lift ${p.best ? "border-[#E30613] bg-gradient-to-b from-[#E30613]/10 to-transparent" : "border-white/10"}`}
+              className={`relative border p-8 md:p-10 hover-lift ${p.best ? "border-[#1E008D] bg-gradient-to-b from-[#1E008D]/10 to-transparent" : "border-[#E5E5E5]"}`}
             >
               {p.best && (
-                <div className="absolute -top-3 left-8 bg-[#E30613] px-3 py-1 text-[10px] font-mono uppercase tracking-[0.2em] text-white">
+                <div className="absolute -top-3 left-8 bg-[#1E008D] px-3 py-1 text-[10px] font-mono uppercase tracking-[0.2em] text-[#2D2D2D]">
                   Más elegido
                 </div>
               )}
               <div className="text-overline mb-3">Plan</div>
-              <h3 className="font-display text-4xl text-white tracking-tight">{p.name}</h3>
+              <h3 className="font-display text-4xl text-[#2D2D2D] tracking-tight">{p.name}</h3>
               <div className="mt-6 flex items-baseline gap-2">
-                <span className="font-display text-6xl text-white">${p.price.toLocaleString("es-MX")}</span>
-                <span className="text-zinc-500 font-mono text-sm">MXN</span>
+                <span className="font-display text-6xl text-[#2D2D2D]">${p.price.toLocaleString("es-MX")}</span>
+                <span className="text-[#6B6B6B] font-mono text-sm">MXN</span>
               </div>
-              <div className="text-zinc-400 mt-2 text-sm">{p.envios} guías · {p.peso}</div>
+              <div className="text-[#6B6B6B] mt-2 text-sm">{p.envios} guías · {p.peso}</div>
               <ul className="mt-8 space-y-3 text-sm">
                 {p.perks.map((perk) => (
-                  <li key={perk} className="flex items-start gap-3 text-zinc-300">
-                    <Check size={16} className="text-[#E30613] mt-0.5" /> {perk}
+                  <li key={perk} className="flex items-start gap-3 text-[#2D2D2D]">
+                    <Check size={16} className="text-[#1E008D] mt-0.5" /> {perk}
                   </li>
                 ))}
               </ul>
-              <Link to="/contacto" className={`mt-10 inline-flex w-full justify-center py-4 font-semibold transition-all active:scale-95 ${p.best ? "bg-[#E30613] hover:bg-[#FF1A27] text-white" : "border border-white/20 hover:border-white text-white"}`}>
+              <Link to="/contacto" className={`mt-10 inline-flex w-full justify-center py-4 font-semibold transition-all active:scale-95 ${p.best ? "bg-[#1E008D] hover:bg-[#2A0FB0] text-[#2D2D2D]" : "border border-white/20 hover:border-white text-[#2D2D2D]"}`}>
                 Contratar
               </Link>
             </div>

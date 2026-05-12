@@ -13,7 +13,7 @@ export default function Cotizador() {
       />
       <PageHeader
         overline="Cotizador"
-        title={<>Tu envío,<br /><em className="not-italic text-[#E30613]">en segundos.</em></>}
+        title={<>Tu envío,<br /><em className="not-italic text-[#3DAE2B]">en segundos.</em></>}
         description="Ingresa los códigos postales, peso y tipo de servicio. Te entregamos un costo aproximado con IVA y tiempo de tránsito."
         breadcrumbs={[{ label: "Cotizador" }]}
         image="https://images.unsplash.com/photo-1775756789951-3f2ef4307258"
@@ -27,10 +27,10 @@ export default function Cotizador() {
               { t: "Estándar vs Express", d: "Estándar entrega en 2-4 días; Express en 24 hrs entre plazas conectadas." },
               { t: "Servicio por cobrar", d: "Disponible al generar la guía. El destinatario cubre el flete a la entrega." },
             ].map((c) => (
-              <div key={c.t} className="border border-white/10 p-8">
+              <div key={c.t} className="border border-[#E5E5E5] p-8">
                 <div className="text-overline mb-3">Detalle</div>
-                <h3 className="font-display text-2xl text-white">{c.t}</h3>
-                <p className="text-zinc-400 mt-3 text-sm leading-relaxed">{c.d}</p>
+                <h3 className="font-display text-2xl text-[#2D2D2D]">{c.t}</h3>
+                <p className="text-[#6B6B6B] mt-3 text-sm leading-relaxed">{c.d}</p>
               </div>
             ))}
           </div>

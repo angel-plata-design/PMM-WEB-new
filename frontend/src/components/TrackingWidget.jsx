@@ -30,51 +30,51 @@ export default function TrackingWidget({ inline = false }) {
   };
 
   return (
-    <div data-testid="tracking-widget" className={`${inline ? "" : "bg-zinc-950/70 backdrop-blur-xl border border-white/10 p-8 md:p-10"}`}>
+    <div data-testid="tracking-widget" className={`${inline ? "" : "bg-white border border-[#E5E5E5] p-8 md:p-10 shadow-[0_20px_50px_-30px_rgba(30,0,141,0.2)]"}`}>
       <div className="text-overline mb-2">Rastreo de pedido</div>
-      <h3 className="font-display text-3xl text-white mb-6">¿Dónde está mi paquete?</h3>
+      <h3 className="font-display text-3xl md:text-4xl text-[#2D2D2D] mb-6">¿Dónde está mi paquete?</h3>
       <form onSubmit={search} className="flex flex-col sm:flex-row gap-3">
         <input
           data-testid="tracking-input"
           value={guia}
           onChange={(e) => setGuia(e.target.value)}
           placeholder="PMM-12345678"
-          className="flex-1 bg-transparent border border-zinc-700 focus:border-[#E30613] py-4 px-5 text-white placeholder-zinc-600 font-mono focus:outline-none transition-colors"
+          className="flex-1 bg-[#FAFAFA] border border-[#E5E5E5] focus:border-[#1E008D] py-4 px-5 text-[#2D2D2D] placeholder-[#B8B8B8] font-mono focus:outline-none transition-colors"
         />
         <button
           type="submit"
           data-testid="tracking-submit"
           disabled={loading}
-          className="inline-flex items-center justify-center gap-2 bg-[#E30613] hover:bg-[#FF1A27] text-white px-7 py-4 font-semibold transition-all active:scale-95 disabled:opacity-60"
+          className="inline-flex items-center justify-center gap-2 btn-primary px-7 py-4 font-semibold disabled:opacity-60"
         >
           {loading ? <Loader2 className="animate-spin" size={18} /> : <><Search size={18} /> Rastrear</>}
         </button>
       </form>
 
       {error && (
-        <div data-testid="tracking-error" className="mt-6 border border-red-500/30 bg-red-500/5 text-red-400 text-sm px-4 py-3 font-mono">
+        <div data-testid="tracking-error" className="mt-6 border border-red-300 bg-red-50 text-red-700 text-sm px-4 py-3 font-mono">
           {error}
         </div>
       )}
 
       {data && (
         <div data-testid="tracking-result" className="mt-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8 pb-8 border-b border-white/10">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8 pb-8 border-b border-[#E5E5E5]">
             <div>
               <div className="text-overline mb-1">Guía</div>
-              <div className="font-mono text-white">{data.guia}</div>
+              <div className="font-mono text-[#2D2D2D]">{data.guia}</div>
             </div>
             <div>
               <div className="text-overline mb-1">Estado</div>
-              <div className="text-white font-medium">{data.estado_actual}</div>
+              <div className="text-[#2D2D2D] font-semibold">{data.estado_actual}</div>
             </div>
             <div>
               <div className="text-overline mb-1">Origen → Destino</div>
-              <div className="text-white text-sm">{data.origen} → {data.destino}</div>
+              <div className="text-[#2D2D2D] text-sm">{data.origen} → {data.destino}</div>
             </div>
             <div>
               <div className="text-overline mb-1">Entrega estimada</div>
-              <div className="font-mono text-white">{data.fecha_estimada}</div>
+              <div className="font-mono text-[#3DAE2B]">{data.fecha_estimada}</div>
             </div>
           </div>
 
@@ -85,17 +85,17 @@ export default function TrackingWidget({ inline = false }) {
               return (
                 <div key={idx} className="flex gap-5 group">
                   <div className="flex flex-col items-center">
-                    <div className={`w-10 h-10 rounded-full flex items-center justify-center ${last ? "bg-[#E30613]" : "bg-zinc-800 border border-zinc-700"}`}>
-                      <Icon size={16} className="text-white" />
+                    <div className={`w-10 h-10 rounded-full flex items-center justify-center ${last ? "bg-[#1E008D] text-white" : "bg-white border border-[#E5E5E5] text-[#6B6B6B]"}`}>
+                      <Icon size={16} />
                     </div>
-                    {!last && <div className="w-px flex-1 bg-zinc-800 my-1" style={{ minHeight: 40 }} />}
+                    {!last && <div className="w-px flex-1 bg-[#E5E5E5] my-1" style={{ minHeight: 40 }} />}
                   </div>
                   <div className="pb-8">
-                    <div className="font-mono text-xs text-zinc-500">
+                    <div className="font-mono text-xs text-[#6B6B6B]">
                       {new Date(ev.timestamp).toLocaleString("es-MX", { dateStyle: "short", timeStyle: "short" })} · {ev.location}
                     </div>
-                    <div className="text-white font-medium mt-1">{ev.status}</div>
-                    <div className="text-zinc-400 text-sm mt-0.5">{ev.description}</div>
+                    <div className="text-[#2D2D2D] font-semibold mt-1">{ev.status}</div>
+                    <div className="text-[#6B6B6B] text-sm mt-0.5">{ev.description}</div>
                   </div>
                 </div>
               );

@@ -24,7 +24,7 @@ User Choice: rediseño + mocks funcionales (cotizador, rastreo, facturación, le
 - SEO: SSL canonical, sitemap.xml, robots.txt, JSON-LD Organization/Article/LocalBusiness, OG + Twitter cards `summary_large_image`.
 
 ## Implemented (2026-01-12)
-- ✅ Diseño editorial dark con tipografía Cormorant Garamond + Manrope (no AI-slop).
+- ✅ Diseño editorial premium con tipografía **Inter** (jugando con pesos 200/300/400/500/600) + JetBrains Mono para acentos.
 - ✅ Hero full-bleed + dual CTAs (Cotizar / Rastrear).
 - ✅ Quick Quote panel sobre hero + Cotizador completo.
 - ✅ Tracking widget con timeline determinístico mock.
@@ -39,6 +39,13 @@ User Choice: rediseño + mocks funcionales (cotizador, rastreo, facturación, le
 - ✅ SEO técnico: react-helmet-async (title/description/canonical/og/twitter), JSON-LD Organization en Home, Article en posts, LocalBusiness en Sucursales.
 - ✅ `/public/sitemap.xml` (15 URLs) y `/public/robots.txt`.
 - ✅ Test suite backend pytest (15/15 passing) y validación frontend e2e (100%).
+
+## Rebrand (2026-01-12)
+- ✅ Paleta oficial PMM: **azul `#1E008D`** (primary), **verde `#3DAE2B`** (accent/secondary), **carbón `#2D2D2D`** (dark surfaces), **crema `#FAFAFA`** (background).
+- ✅ Logos oficiales: `pmm-azul.svg` (en navbar/light) y `pmm-blanco.svg` (en hero/footer/dark).
+- ✅ Tema cambiado de dark editorial → **light editorial** con bandas oscuras de contraste (#2D2D2D + overlays #1E008D).
+- ✅ Tipografía: Cormorant Garamond → **Inter** (variable weights 200-700) para look moderno + legible.
+- ✅ CTAs verdes en hero, azules en interior; acentos verdes para palabras clave en headlines sobre fondos azules (evita dark-on-dark).
 
 ## Backlog / Prioritized
 ### P1 — Próximos pasos para producción

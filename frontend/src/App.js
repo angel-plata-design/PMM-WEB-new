@@ -22,7 +22,7 @@ import Contacto from "@/pages/Contacto";
 function App() {
   return (
     <HelmetProvider>
-      <div className="App min-h-screen bg-[#0A0A0A] text-white">
+      <div className="App min-h-screen bg-[#FAFAFA] text-[#2D2D2D]">
         <BrowserRouter>
           <Navbar />
           <main>

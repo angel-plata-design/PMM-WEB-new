@@ -39,22 +39,22 @@ export default function Sucursales() {
       />
       <PageHeader
         overline="Sucursales"
-        title={<>Nuestra red.<br /><em className="not-italic text-[#E30613]">Tu cercanía.</em></>}
+        title={<>Nuestra red.<br /><em className="not-italic text-[#3DAE2B]">Tu cercanía.</em></>}
         description="Visita una de nuestras sucursales para enviar, recoger paquetes o resolver dudas directamente con nuestro equipo."
         breadcrumbs={[{ label: "Sucursales" }]}
       />
       <section className="section-pad">
         <div className="container-pmm grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {branches.map((b) => (
-            <article key={b.id} data-testid={`sucursal-${b.id}`} className="border border-white/10 p-8 hover-lift hover:border-[#E30613]/40">
+            <article key={b.id} data-testid={`sucursal-${b.id}`} className="border border-[#E5E5E5] p-8 hover-lift hover:border-[#1E008D]/40">
               <div className="text-overline mb-3">{b.estado}</div>
-              <h3 className="font-display text-3xl text-white tracking-tight mb-4">{b.ciudad}</h3>
+              <h3 className="font-display text-3xl text-[#2D2D2D] tracking-tight mb-4">{b.ciudad}</h3>
               <div className="space-y-3 text-sm">
-                <div className="flex gap-2 text-zinc-300"><MapPin size={14} className="text-[#E30613] mt-1 shrink-0" /> {b.direccion}</div>
-                <div className="flex gap-2 text-zinc-400"><Phone size={14} className="text-zinc-500 mt-1 shrink-0" /> {b.telefono}</div>
-                <div className="flex gap-2 text-zinc-400"><Clock size={14} className="text-zinc-500 mt-1 shrink-0" /> {b.horario}</div>
+                <div className="flex gap-2 text-[#2D2D2D]"><MapPin size={14} className="text-[#1E008D] mt-1 shrink-0" /> {b.direccion}</div>
+                <div className="flex gap-2 text-[#6B6B6B]"><Phone size={14} className="text-[#6B6B6B] mt-1 shrink-0" /> {b.telefono}</div>
+                <div className="flex gap-2 text-[#6B6B6B]"><Clock size={14} className="text-[#6B6B6B] mt-1 shrink-0" /> {b.horario}</div>
               </div>
-              <div className="mt-6 pt-6 border-t border-white/5 font-mono text-xs text-zinc-500">CP base · {b.cp}</div>
+              <div className="mt-6 pt-6 border-t border-[#EFEFEF] font-mono text-xs text-[#6B6B6B]">CP base · {b.cp}</div>
             </article>
           ))}
         </div>
