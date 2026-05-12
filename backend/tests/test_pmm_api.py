@@ -3,7 +3,7 @@ import os
 import pytest
 import requests
 
-BASE_URL = os.environ.get('REACT_APP_BACKEND_URL', 'https://5bf3ed2f-472d-4807-a1ef-78ed6fac7d82.preview.emergentagent.com').rstrip('/')
+BASE_URL = (os.environ.get('REACT_APP_BACKEND_URL') or 'https://pmm-web-optimize.preview.emergentagent.com').rstrip('/')
 API = f"{BASE_URL}/api"
 
 
@@ -159,3 +159,80 @@ def test_create_lead_and_list(session):
     assert any(l.get("id") == created["id"] for l in arr)
     for l in arr:
         assert "_id" not in l
+
+
+
+# ===== Tienda: Products =====
+def test_products_list(session):
+    r = session.get(f"{API}/products", timeout=20)
+    assert r.status_code == 200
+    arr = r.json()
+    assert len(arr) == 4
+    ids = {p["id"] for p in arr}
+    assert ids == {"box5", "box10", "box20", "box30"}
+    for p in arr:
+        assert "_id" not in p
+        assert len(p["tiers"]) == 6
+        tier_ids = {t["id"] for t in p["tiers"]}
+        assert tier_ids == {"t1", "t10", "t30", "t50", "t100", "t300"}
+        for t in p["tiers"]:
+            assert t["price"] > 0
+            assert isinstance(t["guias"], int)
+
+
+def test_products_pricing_scaling(session):
+    """t10 should be 9.5x t1 price, t300 should be 240x t1 price."""
+    r = session.get(f"{API}/products", timeout=20)
+    assert r.status_code == 200
+    arr = r.json()
+    box5 = next(p for p in arr if p["id"] == "box5")
+    tiers = {t["id"]: t for t in box5["tiers"]}
+    base = tiers["t1"]["price"]
+    assert base == 249.90
+    assert tiers["t10"]["price"] == round(base * 9.5, 2)
+    assert tiers["t300"]["price"] == round(base * 240.0, 2)
+
+
+# ===== Tienda: Checkout =====
+def test_checkout_success(session):
+    payload = {
+        "name": "TEST_Buyer",
+        "email": "buyer@example.com",
+        "phone": "5512345678",
+        "items": [
+            {"box_id": "box5", "tier_id": "t10", "qty": 2},
+            {"box_id": "box20", "tier_id": "t50", "qty": 1},
+        ],
+    }
+    r = session.post(f"{API}/checkout", json=payload, timeout=20)
+    assert r.status_code == 200, r.text
+    d = r.json()
+    assert d["order_id"].startswith("PMM-")
+    assert len(d["order_id"]) == 12  # PMM- + 8 hex
+    assert "_id" not in d
+    # compute expected total: box5 t10 = 249.90*9.5=2374.05 *2 + box20 t50 = 350*44=15400 *1
+    expected = round(2374.05 * 2 + 15400.0, 2)
+    assert d["total"] == expected
+    assert d["items_count"] == 2
+    assert d["guias_total"] == 10 * 2 + 50 * 1
+
+
+def test_checkout_empty_cart(session):
+    r = session.post(f"{API}/checkout", json={"name": "X", "email": "x@x.com", "phone": "1", "items": []}, timeout=20)
+    assert r.status_code == 400
+
+
+def test_checkout_invalid_box(session):
+    r = session.post(f"{API}/checkout", json={
+        "name": "X", "email": "x@x.com", "phone": "1",
+        "items": [{"box_id": "box999", "tier_id": "t1", "qty": 1}],
+    }, timeout=20)
+    assert r.status_code == 400
+
+
+def test_checkout_invalid_tier(session):
+    r = session.post(f"{API}/checkout", json={
+        "name": "X", "email": "x@x.com", "phone": "1",
+        "items": [{"box_id": "box5", "tier_id": "t999", "qty": 1}],
+    }, timeout=20)
+    assert r.status_code == 400

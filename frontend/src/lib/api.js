@@ -18,6 +18,8 @@ export const pmmApi = {
   post: (slug) => api.get(`/posts/${slug}`).then((r) => r.data),
   services: () => api.get("/services").then((r) => r.data),
   createLead: (payload) => api.post("/leads", payload).then((r) => r.data),
+  products: () => api.get("/products").then((r) => r.data),
+  checkout: (payload) => api.post("/checkout", payload).then((r) => r.data),
 };
 
 export default pmmApi;

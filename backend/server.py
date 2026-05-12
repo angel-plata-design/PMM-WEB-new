@@ -387,6 +387,129 @@ async def list_services():
         ),
     ]
 
+# ============== TIENDA (PRODUCTS + CHECKOUT) ==============
+
+class ProductTier(BaseModel):
+    id: str
+    label: str
+    guias: int
+    price: float
+
+class Product(BaseModel):
+    id: str
+    name: str
+    title: str
+    description: str
+    weight_kg: int
+    color: str
+    color_tag: str
+    tiers: List[ProductTier]
+
+# Volume discount multipliers
+TIER_DEFS = [
+    {"id": "t1",   "label": "1 guía",     "guias": 1,   "mult": 1.0},
+    {"id": "t10",  "label": "10 guías",   "guias": 10,  "mult": 9.5},
+    {"id": "t30",  "label": "30 guías",   "guias": 30,  "mult": 27.5},
+    {"id": "t50",  "label": "50 guías",   "guias": 50,  "mult": 44.0},
+    {"id": "t100", "label": "100 guías",  "guias": 100, "mult": 84.0},
+    {"id": "t300", "label": "300 guías",  "guias": 300, "mult": 240.0},
+]
+
+BOX_BASE_PRICES = [
+    {"id": "box5",  "name": "5kg",  "weight_kg": 5,  "base": 249.90, "color": "#1E008D", "color_tag": "Azul",
+     "title": "Caja 5 kg", "description": "Ideal para envíos pequeños: documentos, accesorios, ropa ligera."},
+    {"id": "box10", "name": "10kg", "weight_kg": 10, "base": 301.00, "color": "#3DAE2B", "color_tag": "Verde",
+     "title": "Caja 10 kg", "description": "Para pedidos medianos: electrónicos, kits, paquetes regulares."},
+    {"id": "box20", "name": "20kg", "weight_kg": 20, "base": 350.00, "color": "#2D2D2D", "color_tag": "Carbón",
+     "title": "Caja 20 kg", "description": "Para envíos pesados: hogar, refacciones, lotes mayoristas."},
+    {"id": "box30", "name": "30kg", "weight_kg": 30, "base": 390.00, "color": "#1E008D", "color_tag": "XL",
+     "title": "Caja 30 kg", "description": "Máxima capacidad para mercancía voluminosa o consolidada."},
+]
+
+def build_products() -> List[Product]:
+    out = []
+    for box in BOX_BASE_PRICES:
+        tiers = []
+        for t in TIER_DEFS:
+            tiers.append(ProductTier(
+                id=t["id"],
+                label=t["label"],
+                guias=t["guias"],
+                price=round(box["base"] * t["mult"], 2),
+            ))
+        out.append(Product(
+            id=box["id"], name=box["name"], title=box["title"],
+            description=box["description"], weight_kg=box["weight_kg"],
+            color=box["color"], color_tag=box["color_tag"], tiers=tiers,
+        ))
+    return out
+
+@api_router.get("/products", response_model=List[Product])
+async def list_products():
+    return build_products()
+
+class CheckoutItem(BaseModel):
+    box_id: str
+    tier_id: str
+    qty: int
+
+class CheckoutRequest(BaseModel):
+    name: str
+    email: str
+    phone: str
+    company: Optional[str] = None
+    items: List[CheckoutItem]
+
+class CheckoutResponse(BaseModel):
+    order_id: str
+    total: float
+    items_count: int
+    guias_total: int
+    created_at: str
+
+@api_router.post("/checkout", response_model=CheckoutResponse)
+async def checkout(payload: CheckoutRequest):
+    if not payload.items:
+        raise HTTPException(status_code=400, detail="Carrito vacío")
+    products = {p.id: p for p in build_products()}
+    total = 0.0
+    guias_total = 0
+    enriched = []
+    for it in payload.items:
+        prod = products.get(it.box_id)
+        if not prod:
+            raise HTTPException(status_code=400, detail=f"Producto inválido: {it.box_id}")
+        tier = next((t for t in prod.tiers if t.id == it.tier_id), None)
+        if not tier:
+            raise HTTPException(status_code=400, detail=f"Paquete inválido: {it.tier_id}")
+        if it.qty <= 0:
+            raise HTTPException(status_code=400, detail="Cantidad inválida")
+        total += tier.price * it.qty
+        guias_total += tier.guias * it.qty
+        enriched.append({
+            "box_id": it.box_id, "box_name": prod.name, "tier_id": it.tier_id,
+            "tier_label": tier.label, "guias": tier.guias,
+            "unit_price": tier.price, "qty": it.qty,
+        })
+    order_id = "PMM-" + str(uuid.uuid4()).split("-")[0].upper()
+    created_at = datetime.now(timezone.utc).isoformat()
+    doc = {
+        "order_id": order_id,
+        "customer": {"name": payload.name, "email": payload.email, "phone": payload.phone, "company": payload.company},
+        "items": enriched,
+        "total": round(total, 2),
+        "guias_total": guias_total,
+        "items_count": len(enriched),
+        "created_at": created_at,
+        "status": "pending_payment",
+    }
+    await db.orders.insert_one(doc)
+    return CheckoutResponse(
+        order_id=order_id, total=round(total, 2),
+        items_count=len(enriched), guias_total=guias_total,
+        created_at=created_at,
+    )
+
 # Mount router & middleware
 app.include_router(api_router)
 

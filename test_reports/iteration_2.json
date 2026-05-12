@@ -1,0 +1,31 @@
+{
+  "summary": "Iteration 2 (PMM redesign + tienda + mapa): 21/21 backend tests pass (15 regression + 6 new for /api/products and /api/checkout). Frontend e2e validated: /sucursales renders react-leaflet map with 16 markers and sidebar (16 map-branch-* items), map-search filter 'Guadalajara' narrows sidebar+markers to 1, click map-branch-suc-mty highlights branch with left blue band (bg-[#1E008D]/0.04 border-l-[#1E008D]) and centers map. /cobertura also renders the leaflet map with 16 markers. /tienda shows product-box5/box10/box20/box30, each with 6 tiers (t1..t300); clicking tier-box5-t10 updates displayed price to $2,374.05 (= 249.90 * 9.5). add-to-cart-box5 increments cart-badge to 1, opens CartDrawer with subtotal $2,374.05 and 'Ir al checkout' button. From /carrito the checkout-form submits with name/email/phone and returns checkout-success showing order_id PMM-408A6CFF; localStorage 'pmm_cart_v1' is cleared to '[]' and cart-badge is removed from navbar. nav-tienda link present in navbar; existing pages still reachable. Pricing math verified server-side (test_products_pricing_scaling, test_checkout_success expected total 20148.10 for box5×t10×2 + box20×t50×1).",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": ["/app/backend/tests/test_pmm_api.py", "/app/test_reports/pytest/pytest_results.xml"],
+  "action_items": [
+    "Minor (testability only): /app/frontend/src/pages/Cart.jsx cart line items lack data-testid on qty +/- buttons and remove button (Cart.jsx lines 117-123). Functionality works (verified via direct submit), but add e.g. data-testid=cart-qty-plus-{key} / cart-qty-minus-{key} / cart-remove-{key} to match the CartDrawer pattern and enable future regression tests."
+  ],
+  "critical_code_review_comments": [
+    "server.py is approaching 530 lines and mixes models, seed data, helpers, and routes. Consider splitting (models/, routes/, services/) before next iteration to stay under the 700-line guideline.",
+    "server.py still uses deprecated @app.on_event('startup'/'shutdown'); migrate to FastAPI lifespan context.",
+    "Lead.email & CheckoutRequest.email are plain str — EmailStr is imported but unused. No server-side email validation.",
+    "POST /api/checkout has no rate limiting and persists arbitrary customer PII (name/email/phone). For a real launch add validation, idempotency key, and a payment-gateway step (currently MOCKED — no payment processing, order stored as status='pending_payment').",
+    "order_id format 'PMM-' + uuid4[:8] (8 hex chars) gives ~4B keyspace — fine for prototype but collision-prone at scale; consider full uuid or sequential counter.",
+    "Frontend: React.StrictMode was removed in src/index.js to work around react-leaflet 4 double-mount; documented but worth revisiting (upgrade to react-leaflet 5 or wrap map in stable key when React 19 + StrictMode is desired)."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_pmm_api.py (added 6 tests: products list, pricing scaling, checkout success, checkout empty cart, invalid box, invalid tier; also removed hardcoded default URL fallback)"
+  ],
+  "success_rate": {"backend": "100% (21/21)", "frontend": "100% (all map + tienda + cart + checkout flows verified)"},
+  "test_credentials": "Not required (public marketing+commerce site, no auth).",
+  "seed_data_creation": "Backend auto-seeds 16 sucursales + 4 blog posts on startup. Tests created TEST_User lead and TEST_FE_Buyer order (PMM-408A6CFF) in MongoDB — both prefixed for cleanup.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Backend: 21 pytest cases in /app/backend/tests/test_pmm_api.py covering health, quote, tracking, branches+filters+coverage, invoices, posts, services, leads, products, checkout. Use REACT_APP_BACKEND_URL — no hardcoded default. Frontend testids: nav-tienda, cart-button, cart-badge, cart-drawer, cart-drawer-close, checkout-button, product-{box5|box10|box20|box30}, tier-{boxid}-{t1|t10|t30|t50|t100|t300}, price-{boxid}, add-to-cart-{boxid}, map-search, map-branch-{suc-id}, checkout-form, checkout-name/email/phone/submit, checkout-success. localStorage key 'pmm_cart_v1' stores cart. Map uses react-leaflet 4.2.1 + OSM tiles; StrictMode is intentionally OFF in src/index.js. MOCKED: POST /api/checkout (no payment gateway, only persists order doc in collection 'orders' with status='pending_payment').",
+  "rca of the issue": "N/A - no failures."
+}
