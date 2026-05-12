@@ -1,0 +1,78 @@
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { Check, ArrowUpRight } from "lucide-react";
+import Seo from "../components/Seo";
+import PageHeader from "../components/PageHeader";
+import pmmApi from "../lib/api";
+
+export default function Servicios({ audience = "empresas" }) {
+  const [services, setServices] = useState([]);
+  useEffect(() => { pmmApi.services().then(setServices).catch(() => {}); }, []);
+
+  const isB2B = audience === "empresas";
+
+  return (
+    <>
+      <Seo
+        title={isB2B ? "Servicios para empresas (B2B)" : "Servicios para personas"}
+        description={isB2B
+          ? "Soluciones logísticas integrales B2B: entrega a detalle, servicio por cobrar, retorno de evidencias y ocurre. Cobertura nacional PMM."
+          : "Envía y recibe paquetes con PMM. Servicios pensados para personas y pequeños negocios en todo México."}
+        path={isB2B ? "/servicios/empresas" : "/servicios/personas"}
+      />
+      <PageHeader
+        overline={isB2B ? "B2B Logística" : "Para personas"}
+        title={isB2B
+          ? <>Soluciones <em className="not-italic text-[#E30613]">integrales</em><br />para tu cadena de suministro.</>
+          : <>Envía como <em className="not-italic text-[#E30613]">grande,</em><br />paga como persona.</>}
+        description={isB2B
+          ? "Trato dedicado, tarifas preferenciales y herramientas operativas para mover tu logística sin fricción."
+          : "Cotiza, envía y rastrea con la misma confiabilidad de los grandes. Sin contratos ni mínimos."}
+        breadcrumbs={[{ label: "Servicios", to: "/servicios/empresas" }, { label: isB2B ? "Empresas" : "Personas" }]}
+        image={isB2B ? "https://images.unsplash.com/photo-1775756789951-3f2ef4307258" : "https://images.unsplash.com/photo-1762320723943-527ff68405c3"}
+      />
+
+      <section className="section-pad">
+        <div className="container-pmm grid grid-cols-1 lg:grid-cols-2 gap-10">
+          {services.map((s) => (
+            <div key={s.key} id={s.key} data-testid={`service-${s.key}`} className="border border-white/10 hover:border-[#E30613]/40 group hover-lift">
+              <div className="aspect-[16/9] overflow-hidden bg-zinc-900">
+                <img src={s.image} alt={s.name} className="w-full h-full object-cover opacity-70 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700" />
+              </div>
+              <div className="p-8 md:p-10">
+                <div className="text-overline mb-4">Servicio · {s.key}</div>
+                <h3 className="font-display text-4xl text-white tracking-tight mb-4">{s.name}</h3>
+                <p className="text-zinc-400 leading-relaxed">{s.description}</p>
+                <ul className="mt-6 space-y-3">
+                  {s.bullets.map((b, i) => (
+                    <li key={i} className="flex items-start gap-3 text-zinc-300 text-sm">
+                      <Check size={16} className="text-[#E30613] mt-0.5 shrink-0" /> {b}
+                    </li>
+                  ))}
+                </ul>
+                <Link to={isB2B ? "/contacto" : "/cotizador"} className="mt-8 inline-flex items-center gap-2 text-white red-line text-sm uppercase tracking-wider font-medium">
+                  {isB2B ? "Solicitar plan B2B" : "Cotizar este servicio"} <ArrowUpRight size={16} />
+                </Link>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="section-pad border-t border-white/5">
+        <div className="container-pmm flex flex-col md:flex-row md:items-end justify-between gap-8">
+          <div className="max-w-3xl">
+            <div className="text-overline mb-6">{isB2B ? "Plan corporativo" : "¿Listo para enviar?"}</div>
+            <h2 className="font-display text-5xl md:text-6xl text-white tracking-tighter leading-[0.95]">
+              {isB2B ? "Habla con un ejecutivo y diseñamos tu plan." : "Cotiza tu envío y agéndalo en minutos."}
+            </h2>
+          </div>
+          <Link to={isB2B ? "/contacto" : "/cotizador"} className="bg-[#E30613] hover:bg-[#FF1A27] text-white px-8 py-5 font-semibold shrink-0">
+            {isB2B ? "Contactar a ventas" : "Cotizar ahora"}
+          </Link>
+        </div>
+      </section>
+    </>
+  );
+}
