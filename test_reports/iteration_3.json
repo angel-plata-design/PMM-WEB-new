@@ -1,0 +1,31 @@
+{
+  "summary": "Iteration 3 (PMM auth dual + tienda con login + mapa azul): 26/26 backend pytest cases PASS, 100% frontend E2E flows PASS. Backend validated: register(409 dup / 400 short-pwd), login(401 invalid), me(401 no-token / 200 con Bearer), PATCH /me uppercase+trunca RFC a 13, logout invalida sesión, google/session(401 con session_id inválido), POST /checkout(401 sin auth / 200 con Bearer y total=20148.10 esperado), GET /orders/mine(401 sin auth / lista del user autenticado), /api/services ahora retorna 8 (entrega-domicilio, entrega-detalle, por-cobrar, ocurre, recoleccion-domicilio, valor-declarado, acuse-recibo, retorno-evidencias). Regresión iter 1+2 verde: health, quote, tracking, branches(16), branches/coverage(30 años), invoices, posts(4), leads, products(4 cajas × 6 tiers). Frontend E2E: /login muestra panel azul PMM con logo blanco + form email/pwd + botón Google; protected /tienda redirige a /login y guarda sessionStorage 'pmm_post_login'='/tienda'; /registro crea cuenta, redirige a /tienda y persiste 64-char token en localStorage 'pmm_session_token'; navbar muestra user-menu-button; tier-box5-t10 + add-to-cart-box5 incrementa cart-badge a 1; /carrito con checkout-phone='5512345678' + checkout-submit retorna checkout-success con order_id PMM-A61A12B4; /cuenta muestra profile-form + orders-list; profile-rfc='TEST010101AB1XX' (15ch) se guarda como 'TEST010101AB1' (13ch upper); menu-logout limpia localStorage y muestra nav-login. Mapa: 1 elemento con clase .pmm-map-tiles, computed filter='grayscale(0.45) brightness(0.92) saturate(0.85) sepia(0.18) hue-rotate(195deg)' (tono azul PMM), 16 marcadores + 16 sidebar en /sucursales y /cobertura, búsqueda 'Monterrey' filtra a 1.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": ["/app/backend/tests/test_pmm_api.py", "/app/test_reports/pytest/pytest_results.xml"],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "server.py = 594 líneas — sigue mezclando modelos, seed, helpers y rutas. Recomendado romper en routes/auth, routes/store, routes/branches, services/, models/ antes de la próxima feature. Es la 3ra iteración con la misma observación.",
+    "server.py usa @app.on_event('startup'/'shutdown') deprecado en FastAPI 0.95+. Migrar a lifespan context manager.",
+    "auth.py: el endpoint /api/auth/logout solo lee el token de la cookie (line 273 `token = request.cookies.get(SESSION_COOKIE)`) — si el frontend usa Bearer en localStorage (como hace por diseño en este proyecto debido al CORS wildcard del ingress K8s), el logout NO invalida la sesión server-side; solo borra la cookie (que ni siquiera existe) y el cliente borra localStorage. La sesión queda viva en MongoDB hasta su TTL de 7 días. Recomendado: aceptar también Authorization: Bearer en logout, o usar get_current_user_optional para resolver el token igual que en /me. Hoy se mitiga porque el cliente descarta el token, pero un atacante con copia del token aún podría usarlo.",
+    "Lead.email sigue siendo str sin EmailStr (CheckoutRequest sí lo usa). Inconsistencia.",
+    "POST /api/checkout y POST /api/leads sin rate limiting / idempotency key. PII (name+email+phone) persiste sin TOS opt-in.",
+    "auth.py /google/session usa `info.get('session_token')` como token propio si Emergent lo provee. Si Emergent reusa tokens entre sesiones (no probable, pero no documentado), causaría colisión con el unique-index de user_sessions; el `update_one(upsert=True)` lo mitiga pero quizá sea preferible generar siempre un token local nuevo.",
+    "Frontend React.StrictMode sigue desactivado en src/index.js por react-leaflet 4 — pendiente desde iter 2.",
+    "auth.py no valida RFC mexicano contra regex (formato AAAA-DDDDDD-HHH) — solo uppercase+truncate. Si el caso de uso real es facturación SAT, conviene validar el patrón."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_pmm_api.py (26 tests: añadidos 11 auth/orders/checkout-auth; actualizado test_services para 8 items; eliminado test_checkout_success legacy sin auth)"
+  ],
+  "success_rate": {"backend": "100% (26/26)", "frontend": "100% (login, registro, protected redirects, navbar user-menu, tienda+checkout autenticado, cuenta+profile RFC, logout, mapa con tinte PMM + filtros)"},
+  "test_credentials": "Tests crean usuarios on-the-fly tipo test_iter3_{ms}@pmm.com con password 'pass123'. Ejemplo creado durante este run: test_iter3_fe_1760292000XXX@pmm.com (frontend) y test_iter3_<ts>@pmm.com (backend). Logout test crea logout_<ts>@pmm.com.",
+  "seed_data_creation": "Seed automático: 16 sucursales + 4 blog posts. Test data: ~3 usuarios TEST_Iter3 + 1+ órdenes PMM-XXXXXXXX persistidas en orders. Frontend creó orden PMM-A61A12B4. Limpieza pendiente: usuarios y órdenes prefijados quedan en MongoDB.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Backend: 26 pytest en /app/backend/tests/test_pmm_api.py. Auth strategy: Bearer header en localStorage 'pmm_session_token' (NO cookie httpOnly cross-subdomain por ingress K8s wildcard CORS). Endpoints auth: /api/auth/{register,login,me,logout,google/session,me(PATCH)}. Protected backend: /api/checkout y /api/orders/mine via Depends(get_current_user). Frontend testids: ver /app/memory/test_credentials.md sección 'Frontend test ids'. /api/services ahora retorna 8 items (antes 4). RFC uppercase+truncate a 13 en PATCH /auth/me. Mapa: CSS filter en clase .pmm-map-tiles definida en index.css (grayscale+brightness+saturate+sepia+hue-rotate-195deg). MOCKED: quote/tracking/invoice/checkout (sin payment gateway, order status='pending_payment'); Google OAuth Emergent endpoint funciona pero UI flow real no probado (solo session_id inválido → 401). Bug latente reportado: /api/auth/logout solo lee cookie (no Bearer), token sobrevive en DB hasta TTL.",
+  "rca of the issue": "N/A — no failures."
+}

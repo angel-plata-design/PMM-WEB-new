@@ -1,4 +1,4 @@
-from fastapi import FastAPI, APIRouter, HTTPException, Query
+from fastapi import FastAPI, APIRouter, HTTPException, Query, Depends
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
@@ -18,7 +18,11 @@ mongo_url = os.environ['MONGO_URL']
 client = AsyncIOMotorClient(mongo_url)
 db = client[os.environ['DB_NAME']]
 
-app = FastAPI(title="PMM API", version="1.0")
+# Auth module — initialize after db
+from auth import router as auth_router, init_auth, ensure_indexes as ensure_auth_indexes, get_current_user, get_current_user_optional, User as AuthUser
+init_auth(db)
+
+app = FastAPI(title="PMM API", version="1.1")
 api_router = APIRouter(prefix="/api")
 
 # ============== MODELS ==============
@@ -174,6 +178,8 @@ POSTS_SEED = [
 
 @app.on_event("startup")
 async def seed_data():
+    # Auth indexes
+    await ensure_auth_indexes()
     # Branches
     count = await db.branches.count_documents({})
     if count == 0:
@@ -354,6 +360,14 @@ class Service(BaseModel):
 async def list_services():
     return [
         Service(
+            key="entrega-domicilio",
+            name="Entrega a domicilio",
+            description="Realizamos tus envíos de paquetes o tarimas directamente a la puerta del domicilio o negocio que nos indiques.",
+            icon="home",
+            image="https://images.unsplash.com/photo-1762320723943-527ff68405c3",
+            bullets=["Door-to-door en 29+ ciudades", "Confirmación al destinatario", "Reagendamiento sin costo"],
+        ),
+        Service(
             key="entrega-detalle",
             name="Entrega a detalle",
             description="Nuestros colaboradores revisan frente a ti cada paquete para asegurar que tu envío llegó como lo pediste.",
@@ -364,26 +378,50 @@ async def list_services():
         Service(
             key="por-cobrar",
             name="Servicio por cobrar",
-            description="Envía sin importar el volumen — el costo se cubre por el destinatario al entregar.",
+            description="Envía a tus clientes sin importar el volumen — el costo del flete se cubre por el destinatario al momento de la entrega.",
             icon="hand-coins",
             image="https://images.unsplash.com/photo-1775756789951-3f2ef4307258",
             bullets=["Cobro al destinatario", "Ideal para e-commerce", "Cobertura nacional"],
         ),
         Service(
-            key="retorno-evidencias",
-            name="Retorno de evidencias",
-            description="Obtén de regreso facturas, entradas a almacén, acuses o cualquier documento firmado.",
-            icon="file-check-2",
-            image="https://images.pexels.com/photos/30341205/pexels-photo-30341205.jpeg",
-            bullets=["Documentos firmados", "Sellos y acuses", "Trazabilidad total"],
-        ),
-        Service(
             key="ocurre",
             name="Servicio ocurre",
-            description="Entrega directa en nuestras sucursales al destinatario que indiques en la carta porte.",
+            description="Hacemos entrega de tus paquetes directo a nuestras sucursales al destinatario que indiques en la carta porte.",
             icon="map-pin",
             image="https://images.pexels.com/photos/11087837/pexels-photo-11087837.jpeg",
             bullets=["Recolección en sucursal", "Identificación oficial", "Resguardo seguro"],
+        ),
+        Service(
+            key="recoleccion-domicilio",
+            name="Recolección a domicilio",
+            description="Programa tu recolección y nosotros recogemos tus paquetes en la puerta de tu domicilio o negocio, sin que pases a sucursal.",
+            icon="truck",
+            image="https://images.unsplash.com/photo-1680546882156-fbabe4acb54d",
+            bullets=["Sin pasar por sucursal", "Programable en línea", "Confirmación por WhatsApp"],
+        ),
+        Service(
+            key="valor-declarado",
+            name="Valor declarado",
+            description="Aseguramos tu envío protegiéndolo contra daños físicos o pérdida en caso fortuito hasta el valor declarado.",
+            icon="shield-check",
+            image="https://images.unsplash.com/photo-1775756789951-3f2ef4307258",
+            bullets=["Hasta el valor declarado", "Sin trámite previo", "Activable al generar guía"],
+        ),
+        Service(
+            key="acuse-recibo",
+            name="Acuse de recibo",
+            description="Solicita evidencia de que tu paquete fue entregado al destinatario. Recibirás el acuse en tu correo al momento de la entrega.",
+            icon="mail-check",
+            image="https://images.pexels.com/photos/30341205/pexels-photo-30341205.jpeg",
+            bullets=["Envío del acuse por email", "Firma del receptor", "Foto cuando aplica"],
+        ),
+        Service(
+            key="retorno-evidencias",
+            name="Retorno de evidencias",
+            description="Obtén de regreso facturas, entradas a almacén, acuses o cualquier documento añadido que confirme la recepción de mercancía.",
+            icon="file-check-2",
+            image="https://images.pexels.com/photos/30341205/pexels-photo-30341205.jpeg",
+            bullets=["Documentos firmados", "Sellos y acuses", "Trazabilidad total"],
         ),
     ]
 
@@ -454,8 +492,8 @@ class CheckoutItem(BaseModel):
     qty: int
 
 class CheckoutRequest(BaseModel):
-    name: str
-    email: str
+    name: Optional[str] = None
+    email: Optional[EmailStr] = None
     phone: str
     company: Optional[str] = None
     items: List[CheckoutItem]
@@ -468,7 +506,7 @@ class CheckoutResponse(BaseModel):
     created_at: str
 
 @api_router.post("/checkout", response_model=CheckoutResponse)
-async def checkout(payload: CheckoutRequest):
+async def checkout(payload: CheckoutRequest, current_user: AuthUser = Depends(get_current_user)):
     if not payload.items:
         raise HTTPException(status_code=400, detail="Carrito vacío")
     products = {p.id: p for p in build_products()}
@@ -495,7 +533,13 @@ async def checkout(payload: CheckoutRequest):
     created_at = datetime.now(timezone.utc).isoformat()
     doc = {
         "order_id": order_id,
-        "customer": {"name": payload.name, "email": payload.email, "phone": payload.phone, "company": payload.company},
+        "user_id": current_user.user_id,
+        "customer": {
+            "name": payload.name or current_user.name,
+            "email": payload.email or current_user.email,
+            "phone": payload.phone,
+            "company": payload.company,
+        },
         "items": enriched,
         "total": round(total, 2),
         "guias_total": guias_total,
@@ -510,13 +554,30 @@ async def checkout(payload: CheckoutRequest):
         created_at=created_at,
     )
 
-# Mount router & middleware
-app.include_router(api_router)
+class OrderSummary(BaseModel):
+    order_id: str
+    total: float
+    guias_total: int
+    items_count: int
+    created_at: str
+    status: str
 
+@api_router.get("/orders/mine", response_model=List[OrderSummary])
+async def my_orders(current_user: AuthUser = Depends(get_current_user)):
+    cursor = db.orders.find({"user_id": current_user.user_id}, {"_id": 0}).sort("created_at", -1)
+    docs = await cursor.to_list(100)
+    return docs
+
+# Mount routers & middleware
+app.include_router(api_router)
+app.include_router(auth_router)
+
+_cors_env = os.environ.get('CORS_ORIGINS', '')
+_cors_origins = [o.strip() for o in _cors_env.split(',') if o.strip()] or ["http://localhost:3000"]
 app.add_middleware(
     CORSMiddleware,
     allow_credentials=True,
-    allow_origins=os.environ.get('CORS_ORIGINS', '*').split(','),
+    allow_origins=_cors_origins,
     allow_methods=["*"],
     allow_headers=["*"],
 )

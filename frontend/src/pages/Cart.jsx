@@ -4,13 +4,15 @@ import { Trash2, Plus, Minus, ArrowLeft, Loader2, ShoppingBag, Check } from "luc
 import Seo from "../components/Seo";
 import PageHeader from "../components/PageHeader";
 import { useCart } from "../context/CartContext";
-import pmmApi from "../lib/api";
+import { useAuth } from "../context/AuthContext";
+import pmmApi, { formatApiError } from "../lib/api";
 
 export default function Cart() {
   const { items, update, remove, subtotal, totalGuias, clear } = useCart();
+  const { user } = useAuth();
   const navigate = useNavigate();
-  const [form, setForm] = useState({ name: "", email: "", phone: "", company: "" });
-  const [step, setStep] = useState("review"); // review | done
+  const [form, setForm] = useState({ phone: "", company: "" });
+  const [step, setStep] = useState("review");
   const [loading, setLoading] = useState(false);
   const [orderId, setOrderId] = useState("");
   const [error, setError] = useState("");
@@ -22,16 +24,17 @@ export default function Cart() {
     setError(""); setLoading(true);
     try {
       const r = await pmmApi.checkout({
-        ...form,
-        items: items.map((p) => ({
-          box_id: p.box_id, tier_id: p.tier_id, qty: p.qty,
-        })),
+        name: user?.name,
+        email: user?.email,
+        phone: form.phone,
+        company: form.company,
+        items: items.map((p) => ({ box_id: p.box_id, tier_id: p.tier_id, qty: p.qty })),
       });
       setOrderId(r.order_id);
       setStep("done");
       clear();
     } catch (err) {
-      setError(err?.response?.data?.detail || "No pudimos procesar tu pedido. Intenta de nuevo.");
+      setError(formatApiError(err));
     } finally {
       setLoading(false);
     }
@@ -153,13 +156,10 @@ export default function Cart() {
                   </div>
 
                   <form onSubmit={submit} className="space-y-4" data-testid="checkout-form">
-                    <div>
-                      <label className="text-overline block mb-2">Nombre *</label>
-                      <input required value={form.name} onChange={onChange("name")} className={inputCls} data-testid="checkout-name" />
-                    </div>
-                    <div>
-                      <label className="text-overline block mb-2">Email *</label>
-                      <input required type="email" value={form.email} onChange={onChange("email")} className={inputCls} data-testid="checkout-email" />
+                    <div className="bg-white border border-[#E5E5E5] p-4 mb-2">
+                      <div className="text-overline mb-1">Cliente</div>
+                      <div className="font-display-medium text-[#2D2D2D]">{user?.name}</div>
+                      <div className="text-xs text-[#6B6B6B] font-mono">{user?.email}</div>
                     </div>
                     <div>
                       <label className="text-overline block mb-2">Teléfono *</label>

@@ -91,7 +91,7 @@ export default function Contacto() {
               <div className="space-y-4 mt-4">
                 <a href="tel:+528007666666" className="flex items-center gap-3 text-[#2D2D2D] hover:text-[#1E008D]"><Phone size={18} /> 800 PMM (766-6666)</a>
                 <a href="mailto:atencion@pmm.com.mx" className="flex items-center gap-3 text-[#2D2D2D] hover:text-[#1E008D]"><Mail size={18} /> atencion@pmm.com.mx</a>
-                <a href="https://wa.me/525555555555" target="_blank" rel="noreferrer" className="flex items-center gap-3 text-[#2D2D2D] hover:text-[#1E008D]"><MessageCircle size={18} /> WhatsApp directo</a>
+                <a href="https://wa.me/5216692705424" target="_blank" rel="noreferrer" className="flex items-center gap-3 text-[#2D2D2D] hover:text-[#1E008D]"><MessageCircle size={18} /> WhatsApp directo</a>
               </div>
             </div>
             <div className="border border-[#E5E5E5] p-8">

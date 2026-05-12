@@ -128,8 +128,9 @@ export default function SucursalesMap({ branches }) {
           style={{ zIndex: 1 }}
         >
           <TileLayer
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> · PMM'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            className="pmm-map-tiles"
           />
           {target && <MapFlyTo position={[target.lat, target.lng]} zoom={13} />}
           {filtered.map((b) => (

@@ -2,7 +2,7 @@ import React from "react";
 import { MessageCircle } from "lucide-react";
 
 export default function WhatsAppFab({ message = "Hola PMM, quiero cotizar un envío. Empresa: __ . Origen: __ . Destino: __ . Volumen mensual: __" }) {
-  const phone = "525555555555";
+  const phone = "5216692705424";
   const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
   return (
     <a
