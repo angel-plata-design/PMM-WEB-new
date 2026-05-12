@@ -56,6 +56,16 @@ User Choice: rediseño + mocks funcionales (cotizador, rastreo, facturación, le
 
 > Nota técnica: `React.StrictMode` removido en `src/index.js` para evitar el error "Map container is already initialized" con react-leaflet 4 + React 19. Revisable al actualizar a react-leaflet 5.
 
+## Autenticación dual + Map theme + contenido (2026-01-12)
+- ✅ **Auth dual**: email/password (bcrypt + sesión en MongoDB) **y** Emergent Google OAuth. Mismo cookie/Bearer compartido — el endpoint `get_current_user` reconoce ambos métodos.
+- ✅ Estrategia de token: `localStorage` + `Authorization: Bearer` (NO httpOnly cookie) — el ingress de K8s reescribe CORS a wildcard, lo cual rompe cookies cross-subdomain. Backend acepta ambos.
+- ✅ Páginas nuevas: `/login` (panel azul), `/registro` (panel verde), `/cuenta` (perfil + RFC + historial de pedidos), `/auth/callback` (handler de Google OAuth).
+- ✅ Protected routes: `/tienda`, `/carrito`, `/cuenta`. ProtectedRoute guarda destino intentado en sessionStorage y regresa post-login.
+- ✅ Backend: `POST /api/checkout` y `GET /api/orders/mine` ahora requieren auth. Las órdenes quedan ligadas al `user_id`.
+- ✅ **Mapa azul PMM**: clase CSS `.pmm-map-tiles` con `filter: grayscale + brightness + saturate + sepia + hue-rotate(195deg)` aplicada al TileLayer — tonos azules de marca sin perder legibilidad. Popups, controls de zoom y attribution también brandeados.
+- ✅ **Contenido sólido**: `/api/services` ahora retorna **8 servicios** con texto oficial PMM (entrega a domicilio, entrega a detalle, servicio por cobrar, servicio ocurre, recolección a domicilio, valor declarado, acuse de recibo, retorno de evidencias). WhatsApp real `+52 1 669 270 5424`.
+- ✅ Iteración 3 testing: **26/26 backend** + frontend E2E 100%. Bug latente del logout-vía-Bearer reportado y corregido (token ahora se invalida server-side en cualquier método).
+
 ## Backlog / Prioritized
 ### P1 — Próximos pasos para producción
 - Reemplazar mocks: integrar `/api/quote` con tarifario real PMM, `/api/tracking` con sistema real (web service WMS/TMS), `/api/invoices` con SAT/SW.

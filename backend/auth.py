@@ -270,7 +270,12 @@ async def me(user: User = Depends(get_current_user)):
 
 @router.post("/logout")
 async def logout(request: Request, response: Response):
+    # Resolve token from cookie OR Authorization Bearer header
     token = request.cookies.get(SESSION_COOKIE)
+    if not token:
+        auth = request.headers.get("Authorization", "")
+        if auth.startswith("Bearer "):
+            token = auth[7:]
     if token and _db is not None:
         await _db.user_sessions.delete_one({"session_token": token})
     _clear_session_cookie(response)
