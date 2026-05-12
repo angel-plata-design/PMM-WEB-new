@@ -114,11 +114,11 @@ export default function Cart() {
                           <div className="text-xs text-[#6B6B6B] font-mono mt-1">${p.unit_price.toLocaleString("es-MX")} por paquete</div>
                           <div className="mt-4 flex items-center gap-4">
                             <div className="inline-flex items-center border border-[#E5E5E5]">
-                              <button onClick={() => update(key, p.qty - 1)} className="p-2 hover:bg-[#FAFAFA]"><Minus size={12} /></button>
-                              <span className="px-4 font-mono text-[#2D2D2D]">{p.qty}</span>
-                              <button onClick={() => update(key, p.qty + 1)} className="p-2 hover:bg-[#FAFAFA]"><Plus size={12} /></button>
+                              <button onClick={() => update(key, p.qty - 1)} data-testid={`cart-qty-minus-${key}`} className="p-2 hover:bg-[#FAFAFA]"><Minus size={12} /></button>
+                              <span data-testid={`cart-qty-${key}`} className="px-4 font-mono text-[#2D2D2D]">{p.qty}</span>
+                              <button onClick={() => update(key, p.qty + 1)} data-testid={`cart-qty-plus-${key}`} className="p-2 hover:bg-[#FAFAFA]"><Plus size={12} /></button>
                             </div>
-                            <button onClick={() => remove(key)} className="text-[#6B6B6B] hover:text-red-600 text-xs font-mono uppercase tracking-wider flex items-center gap-1">
+                            <button onClick={() => remove(key)} data-testid={`cart-remove-${key}`} className="text-[#6B6B6B] hover:text-red-600 text-xs font-mono uppercase tracking-wider flex items-center gap-1">
                               <Trash2 size={12} /> Quitar
                             </button>
                           </div>

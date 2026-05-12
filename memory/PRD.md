@@ -47,6 +47,15 @@ User Choice: rediseño + mocks funcionales (cotizador, rastreo, facturación, le
 - ✅ Tipografía: Cormorant Garamond → **Inter** (variable weights 200-700) para look moderno + legible.
 - ✅ CTAs verdes en hero, azules en interior; acentos verdes para palabras clave en headlines sobre fondos azules (evita dark-on-dark).
 
+## Mapa interactivo + Tienda (2026-01-12)
+- ✅ **Mapa interactivo** con `react-leaflet@4.2.1` + OpenStreetMap (sin API key) en `/sucursales` y `/cobertura`. Sidebar con buscador (ciudad/estado/CP), 16 marcadores PMM (SVG inline, verde para activo), popups con info de sucursal, fly-to al seleccionar.
+- ✅ **Tienda /tienda**: 4 cajas (5kg, 10kg, 20kg, 30kg) × 6 tiers (1, 10, 30, 50, 100, 300 guías). Precios escalados con descuentos por volumen. Add-to-cart con animación verde "Agregado".
+- ✅ **Carrito**: CartContext con persistencia localStorage `pmm_cart_v1`. CartDrawer global, badge en navbar, página `/carrito` con form checkout, página de éxito con order_id `PMM-XXXXXXXX`.
+- ✅ Endpoints backend: `GET /api/products`, `POST /api/checkout` (persiste en collection `orders`).
+- ✅ Iteración 2 testing: **21/21 backend** + frontend e2e 100%.
+
+> Nota técnica: `React.StrictMode` removido en `src/index.js` para evitar el error "Map container is already initialized" con react-leaflet 4 + React 19. Revisable al actualizar a react-leaflet 5.
+
 ## Backlog / Prioritized
 ### P1 — Próximos pasos para producción
 - Reemplazar mocks: integrar `/api/quote` con tarifario real PMM, `/api/tracking` con sistema real (web service WMS/TMS), `/api/invoices` con SAT/SW.
