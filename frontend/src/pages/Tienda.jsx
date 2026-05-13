@@ -101,6 +101,61 @@ function ProductCard({ box }) {
   );
 }
 
+const PRODUCTS_FALLBACK = [
+  {
+    id: "box5", name: "5kg", title: "Caja 5 kg", weight_kg: 5,
+    color: "#1E008D", color_tag: "Azul",
+    description: "Ideal para envíos pequeños: documentos, accesorios, ropa ligera.",
+    tiers: [
+      { id: "t1",   label: "1 guía",    guias: 1,   price: 249.90 },
+      { id: "t10",  label: "10 guías",  guias: 10,  price: 2374.05 },
+      { id: "t30",  label: "30 guías",  guias: 30,  price: 6872.25 },
+      { id: "t50",  label: "50 guías",  guias: 50,  price: 10995.60 },
+      { id: "t100", label: "100 guías", guias: 100, price: 20991.60 },
+      { id: "t300", label: "300 guías", guias: 300, price: 59976.00 },
+    ],
+  },
+  {
+    id: "box10", name: "10kg", title: "Caja 10 kg", weight_kg: 10,
+    color: "#3DAE2B", color_tag: "Verde",
+    description: "Para pedidos medianos: electrónicos, kits, paquetes regulares.",
+    tiers: [
+      { id: "t1",   label: "1 guía",    guias: 1,   price: 301.00 },
+      { id: "t10",  label: "10 guías",  guias: 10,  price: 2859.50 },
+      { id: "t30",  label: "30 guías",  guias: 30,  price: 8277.50 },
+      { id: "t50",  label: "50 guías",  guias: 50,  price: 13244.00 },
+      { id: "t100", label: "100 guías", guias: 100, price: 25284.00 },
+      { id: "t300", label: "300 guías", guias: 300, price: 72240.00 },
+    ],
+  },
+  {
+    id: "box20", name: "20kg", title: "Caja 20 kg", weight_kg: 20,
+    color: "#2D2D2D", color_tag: "Carbón",
+    description: "Para envíos pesados: hogar, refacciones, lotes mayoristas.",
+    tiers: [
+      { id: "t1",   label: "1 guía",    guias: 1,   price: 350.00 },
+      { id: "t10",  label: "10 guías",  guias: 10,  price: 3325.00 },
+      { id: "t30",  label: "30 guías",  guias: 30,  price: 9625.00 },
+      { id: "t50",  label: "50 guías",  guias: 50,  price: 15400.00 },
+      { id: "t100", label: "100 guías", guias: 100, price: 29400.00 },
+      { id: "t300", label: "300 guías", guias: 300, price: 84000.00 },
+    ],
+  },
+  {
+    id: "box30", name: "30kg", title: "Caja 30 kg", weight_kg: 30,
+    color: "#1E008D", color_tag: "XL",
+    description: "Máxima capacidad para mercancía voluminosa o consolidada.",
+    tiers: [
+      { id: "t1",   label: "1 guía",    guias: 1,   price: 390.00 },
+      { id: "t10",  label: "10 guías",  guias: 10,  price: 3705.00 },
+      { id: "t30",  label: "30 guías",  guias: 30,  price: 10725.00 },
+      { id: "t50",  label: "50 guías",  guias: 50,  price: 17160.00 },
+      { id: "t100", label: "100 guías", guias: 100, price: 32760.00 },
+      { id: "t300", label: "300 guías", guias: 300, price: 93600.00 },
+    ],
+  },
+];
+
 export default function Tienda() {
   const [boxes, setBoxes] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -108,7 +163,7 @@ export default function Tienda() {
   useEffect(() => {
     pmmApi.products()
       .then((p) => setBoxes(p))
-      .catch(() => {})
+      .catch(() => setBoxes(PRODUCTS_FALLBACK))
       .finally(() => setLoading(false));
   }, []);
 

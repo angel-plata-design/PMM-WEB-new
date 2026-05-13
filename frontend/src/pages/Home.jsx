@@ -30,7 +30,15 @@ export default function Home() {
 
   useEffect(() => {
     pmmApi.coverage().then(setCoverage).catch(() => {});
-    pmmApi.posts().then((p) => setPosts(p.slice(0, 4))).catch(() => {});
+    pmmApi.posts().then((p) => setPosts(p.slice(0, 4))).catch(() => {
+      // Fallback estático si la API no responde
+      setPosts([
+        { slug: "optimiza-logistica", title: "5 formas de optimizar tu logística en 2025", category: "Empresas", read_time: "4 min", cover: "https://images.pexels.com/photos/11087837/pexels-photo-11087837.jpeg" },
+        { slug: "guias-prepagadas", title: "¿Por qué las guías prepagadas son la mejor inversión?", category: "Tienda", read_time: "3 min", cover: "https://images.pexels.com/photos/30341205/pexels-photo-30341205.jpeg" },
+        { slug: "e-commerce-envios", title: "E-commerce mexicano: la logística que sí funciona", category: "E-commerce", read_time: "5 min", cover: "https://images.unsplash.com/photo-1775756789951-3f2ef4307258" },
+        { slug: "rastreo-tiempo-real", title: "Trazabilidad total: rastreo en tiempo real con PMM", category: "Tecnología", read_time: "3 min", cover: "https://images.unsplash.com/photo-1762320723943-527ff68405c3" },
+      ]);
+    });
   }, []);
 
   return (
@@ -49,7 +57,7 @@ export default function Home() {
         <div className="absolute inset-0 bg-gradient-to-t from-[#1E008D] via-[#1E008D]/55 to-[#1E008D]/15" />
         <div className="absolute inset-0 bg-gradient-to-r from-[#1E008D]/85 via-[#1E008D]/25 to-transparent" />
 
-        <div className="container-pmm relative z-10 pt-32 pb-20">
+        <div className="container-pmm relative z-10 pt-32 pb-52">
           <div className="fade-up text-overline-on-dark mb-6">Orgullosamente mexicanos · Desde 1995</div>
           <h1 className="font-display text-white text-6xl sm:text-7xl md:text-8xl lg:text-[8.5rem] max-w-5xl">
             <span className="fade-up fade-up-d1 inline-block">Transportando</span><br />

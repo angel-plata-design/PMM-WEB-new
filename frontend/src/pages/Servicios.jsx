@@ -7,7 +7,41 @@ import pmmApi from "../lib/api";
 
 export default function Servicios({ audience = "empresas" }) {
   const [services, setServices] = useState([]);
-  useEffect(() => { pmmApi.services().then(setServices).catch(() => {}); }, []);
+  useEffect(() => {
+    pmmApi.services().then(setServices).catch(() => {
+      // Fallback estático si la API no responde
+      setServices([
+        {
+          key: "entrega-detalle",
+          name: "Entrega a Detalle",
+          description: "Revisión de mercancía frente al cliente al momento de la entrega. Incluye acuse firmado y verificación de estado del paquete.",
+          bullets: ["Acuse firmado por el destinatario", "Verificación de integridad", "Evidencia fotográfica disponible", "Ideal para artículos de valor"],
+          image: "https://images.pexels.com/photos/30341205/pexels-photo-30341205.jpeg",
+        },
+        {
+          key: "por-cobrar",
+          name: "Servicio por Cobrar",
+          description: "El destinatario cubre el costo del flete al recibir el paquete. Solución ideal para e-commerce y ventas en línea.",
+          bullets: ["Sin inversión inicial del remitente", "Pago en efectivo o tarjeta en destino", "Ideal para e-commerce", "Cobertura nacional"],
+          image: "https://images.unsplash.com/photo-1775756789951-3f2ef4307258",
+        },
+        {
+          key: "retorno-evidencias",
+          name: "Retorno de Evidencias",
+          description: "Gestión y regreso de documentos firmados, facturas originales y acuses de recibo a tu domicilio.",
+          bullets: ["Retorno de facturas y documentos", "Acuses originales firmados", "Trazabilidad completa", "Para procesos administrativos y legales"],
+          image: "https://images.unsplash.com/photo-1762320723943-527ff68405c3",
+        },
+        {
+          key: "ocurre",
+          name: "Servicio Ocurre",
+          description: "El destinatario recoge su paquete directamente en la sucursal PMM más cercana a su domicilio.",
+          bullets: ["Sin necesidad de estar en casa", "Retiro en horario flexible", "Múltiples sucursales", "Notificación por WhatsApp"],
+          image: "https://images.pexels.com/photos/11087837/pexels-photo-11087837.jpeg",
+        },
+      ]);
+    });
+  }, [audience]);
 
   const isB2B = audience === "empresas";
 
@@ -68,7 +102,7 @@ export default function Servicios({ audience = "empresas" }) {
               {isB2B ? "Habla con un ejecutivo y diseñamos tu plan." : "Cotiza tu envío y agéndalo en minutos."}
             </h2>
           </div>
-          <Link to={isB2B ? "/contacto" : "/cotizador"} className="bg-[#1E008D] hover:bg-[#2A0FB0] text-[#2D2D2D] px-8 py-5 font-semibold shrink-0">
+          <Link to={isB2B ? "/contacto" : "/cotizador"} className="bg-[#1E008D] hover:bg-[#2A0FB0] text-white px-8 py-5 font-semibold shrink-0">
             {isB2B ? "Contactar a ventas" : "Cotizar ahora"}
           </Link>
         </div>

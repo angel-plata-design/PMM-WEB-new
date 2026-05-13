@@ -104,7 +104,9 @@ export default function Navbar() {
                 `text-[13px] font-medium tracking-wide nav-underline transition-colors ${
                   isActive
                     ? (transparent ? "text-white" : "text-[#1E008D]")
-                    : `${textMuted} hover:${transparent ? "text-white" : "text-[#2D2D2D]"}`
+                    : transparent
+                      ? "text-white/70 hover:text-white"
+                      : "text-[#6B6B6B] hover:text-[#2D2D2D]"
                 }`
               }
             >
@@ -129,7 +131,7 @@ export default function Navbar() {
           {user ? (
             <UserMenu user={user} dark={transparent} onLogout={onLogout} />
           ) : (
-            <Link to="/login" data-testid="nav-login" className={`text-[13px] font-medium ${textMuted} hover:${transparent ? "text-white" : "text-[#2D2D2D]"}`}>
+            <Link to="/login" data-testid="nav-login" className={`text-[13px] font-medium ${transparent ? "text-white/70 hover:text-white" : "text-[#6B6B6B] hover:text-[#2D2D2D]"}`}>
               Iniciar sesión
             </Link>
           )}
@@ -137,7 +139,7 @@ export default function Navbar() {
           <Link
             to="/facturacion"
             data-testid="nav-facturacion"
-            className={`text-[13px] font-medium ${textMuted} hover:${transparent ? "text-white" : "text-[#2D2D2D]"}`}
+            className={`text-[13px] font-medium ${transparent ? "text-white/70 hover:text-white" : "text-[#6B6B6B] hover:text-[#2D2D2D]"}`}
           >
             Facturación
           </Link>

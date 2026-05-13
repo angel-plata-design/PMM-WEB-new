@@ -78,7 +78,7 @@ export default function Contacto() {
 
                 {error && <div className="border border-red-500/30 bg-red-500/5 text-red-400 text-sm px-4 py-3 font-mono">{error}</div>}
 
-                <button type="submit" disabled={loading} data-testid="contact-submit" className="inline-flex items-center gap-3 bg-[#1E008D] hover:bg-[#2A0FB0] text-[#2D2D2D] px-8 py-5 font-semibold transition-all active:scale-95 disabled:opacity-60">
+                <button type="submit" disabled={loading} data-testid="contact-submit" className="inline-flex items-center gap-3 bg-[#1E008D] hover:bg-[#2A0FB0] text-white px-8 py-5 font-semibold transition-all active:scale-95 disabled:opacity-60">
                   {loading ? <Loader2 className="animate-spin" size={18} /> : "Enviar solicitud"}
                 </button>
               </form>
