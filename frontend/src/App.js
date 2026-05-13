@@ -76,7 +76,7 @@ function App() {
       <AuthProvider>
         <CartProvider>
           <div className="App min-h-screen bg-[#FAFAFA] text-[#2D2D2D]">
-            <BrowserRouter>
+            <BrowserRouter basename={process.env.PUBLIC_URL || "/"}>
               <AppShell />
             </BrowserRouter>
           </div>
