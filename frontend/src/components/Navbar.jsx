@@ -8,7 +8,6 @@ const navItems = [
   { to: "/servicios/empresas", label: "Empresas" },
   { to: "/servicios/personas", label: "Personas" },
   { to: "/cobertura", label: "Cobertura" },
-  { to: "/rastreo", label: "Rastreo" },
   { to: "/tienda", label: "Tienda" },
   { to: "/blog", label: "Insights" },
   { to: "/sucursales", label: "Sucursales" },
@@ -136,11 +135,11 @@ export default function Navbar() {
           )}
 
           <Link
-            to="/cotizador"
-            data-testid="cta-cotizar-nav"
-            className="btn-primary text-[13px] font-semibold px-5 py-3"
+            to="/facturacion"
+            data-testid="nav-facturacion"
+            className={`text-[13px] font-medium ${textMuted} hover:${transparent ? "text-white" : "text-[#2D2D2D]"}`}
           >
-            Cotizar envío
+            Facturación
           </Link>
         </div>
 
@@ -173,7 +172,6 @@ export default function Navbar() {
           ) : (
             <Link to="/login" className="block text-[#1E008D] text-base font-semibold">Iniciar sesión</Link>
           )}
-          <Link to="/cotizador" className="block btn-primary text-center py-3 mt-2 font-semibold">Cotizar envío</Link>
         </div>
       )}
     </header>

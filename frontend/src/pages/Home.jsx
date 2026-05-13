@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowUpRight, ArrowRight, Package, HandCoins, FileCheck2, MapPin, Truck, Building2, ShieldCheck } from "lucide-react";
 import Seo from "../components/Seo";
-import QuickQuote from "../components/QuickQuote";
+import HomeToolsPanel from "../components/HomeToolsPanel";
 import pmmApi from "../lib/api";
 
 const HERO_IMG = "https://images.pexels.com/photos/11087837/pexels-photo-11087837.jpeg";
@@ -65,27 +65,27 @@ export default function Home() {
 
             <div className="mt-10 flex flex-col sm:flex-row gap-4">
               <Link
-                to="/cotizador"
-                data-testid="hero-cta-cotizar"
+                to="/tienda"
+                data-testid="hero-cta-tienda"
                 className="inline-flex items-center justify-center gap-3 bg-[#3DAE2B] hover:bg-[#339224] text-white px-8 py-5 font-semibold transition-all active:scale-95"
               >
-                Cotizar envío <ArrowRight size={18} />
+                Ir a la tienda <ArrowRight size={18} />
               </Link>
               <Link
-                to="/rastreo"
-                data-testid="hero-cta-rastrear"
+                to="/servicios/empresas"
+                data-testid="hero-cta-empresas"
                 className="inline-flex items-center justify-center gap-3 border border-white/30 hover:border-white text-white px-8 py-5 font-semibold transition-all hover:bg-white/5"
               >
-                Rastrear paquete <ArrowUpRight size={18} />
+                Soluciones B2B <ArrowUpRight size={18} />
               </Link>
             </div>
           </div>
         </div>
       </section>
 
-      {/* QUICK QUOTE PANEL — white card floating */}
+      {/* TOOLS PANEL — Cotizar + Rastrear */}
       <section className="container-pmm -mt-24 relative z-20 pb-20">
-        <QuickQuote />
+        <HomeToolsPanel />
       </section>
 
       {/* STATS — light editorial */}

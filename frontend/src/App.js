@@ -55,8 +55,8 @@ function AppShell() {
           <Route path="/sucursales" element={<Sucursales />} />
           <Route path="/facturacion" element={<Facturacion />} />
           <Route path="/contacto" element={<Contacto />} />
-          <Route path="/tienda" element={<ProtectedRoute><Tienda /></ProtectedRoute>} />
-          <Route path="/carrito" element={<ProtectedRoute><Cart /></ProtectedRoute>} />
+          <Route path="/tienda" element={<Tienda />} />
+          <Route path="/carrito" element={<Cart />} />
           <Route path="/cuenta" element={<ProtectedRoute><Account /></ProtectedRoute>} />
           <Route path="/login" element={<Login />} />
           <Route path="/registro" element={<Register />} />
