@@ -45,7 +45,7 @@ export default function Register() {
         <aside className="lg:col-span-5 bg-[#3DAE2B] text-white p-10 md:p-16 flex flex-col justify-between relative overflow-hidden order-2 lg:order-1">
           <div className="relative z-10">
             <Link to="/" className="inline-block mb-12">
-              <img src="/pmm-blanco.svg" alt="PMM" className="h-10 w-auto" />
+              <img src={`${process.env.PUBLIC_URL}/pmm-blanco.svg`} alt="PMM" className="h-10 w-auto" />
             </Link>
             <div className="text-overline-on-dark mb-6" style={{ color: "rgba(255,255,255,0.85)" }}>Crea tu cuenta</div>
             <h1 className="font-display text-5xl md:text-6xl lg:text-7xl text-white">

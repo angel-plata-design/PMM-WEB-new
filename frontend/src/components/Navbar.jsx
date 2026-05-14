@@ -91,7 +91,7 @@ export default function Navbar() {
     >
       <div className="container-pmm flex items-center justify-between h-20">
         <Link to="/" data-testid="logo-link" className="flex items-center group shrink-0">
-          <img src={transparent ? "/pmm-blanco.svg" : "/pmm-azul.svg"} alt="PMM" className="h-9 w-auto" />
+          <img src={transparent ? `${process.env.PUBLIC_URL}/pmm-blanco.svg` : `${process.env.PUBLIC_URL}/pmm-azul.svg`} alt="PMM" className="h-9 w-auto" />
         </Link>
 
         <nav className="hidden lg:flex items-center gap-6">

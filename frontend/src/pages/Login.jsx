@@ -64,7 +64,7 @@ export default function Login() {
         <aside className="lg:col-span-5 bg-[#1E008D] text-white p-10 md:p-16 flex flex-col justify-between relative overflow-hidden">
           <div className="relative z-10">
             <Link to="/" className="inline-block mb-12">
-              <img src="/pmm-blanco.svg" alt="PMM" className="h-10 w-auto" />
+              <img src={`${process.env.PUBLIC_URL}/pmm-blanco.svg`} alt="PMM" className="h-10 w-auto" />
             </Link>
             <div className="text-overline-on-dark mb-6">Tu cuenta PMM</div>
             <h1 className="font-display text-5xl md:text-6xl lg:text-7xl text-white">

@@ -31,7 +31,7 @@ export default function Footer() {
 
         <div className="grid grid-cols-2 md:grid-cols-5 gap-10 mb-16">
           <div className="col-span-2">
-            <img src="/pmm-blanco.svg" alt="PMM" className="h-10 w-auto mb-6" />
+            <img src={`${process.env.PUBLIC_URL}/pmm-blanco.svg`} alt="PMM" className="h-10 w-auto mb-6" />
             <p className="text-white/70 text-sm leading-relaxed max-w-xs">
               Paquetería y Mensajería. Tu socio logístico en México con más de 30 años transportando emociones a cada rincón del país.
             </p>
