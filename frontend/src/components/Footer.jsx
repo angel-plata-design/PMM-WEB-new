@@ -52,7 +52,7 @@ export default function Footer() {
             <ul className="space-y-3 text-sm">
               <li><Link to="/rastreo" className="text-white/70 hover:text-white">Rastrear envío</Link></li>
               <li><Link to="/cobertura" className="text-white/70 hover:text-white">Cobertura</Link></li>
-              <li><Link to="/sucursales" className="text-white/70 hover:text-white">Sucursales</Link></li>
+              <li><Link to="/cobertura" className="text-white/70 hover:text-white">Cobertura y sucursales</Link></li>
               <li><Link to="/facturacion" className="text-white/70 hover:text-white">Facturación</Link></li>
               <li><Link to="/blog" className="text-white/70 hover:text-white">Insights</Link></li>
             </ul>

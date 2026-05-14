@@ -19,7 +19,6 @@ import Servicios from "@/pages/Servicios";
 import GuiasPrepagadas from "@/pages/GuiasPrepagadas";
 import BlogIndex from "@/pages/BlogIndex";
 import BlogPost from "@/pages/BlogPost";
-import Sucursales from "@/pages/Sucursales";
 import Facturacion from "@/pages/Facturacion";
 import Contacto from "@/pages/Contacto";
 import Tienda from "@/pages/Tienda";
@@ -52,7 +51,6 @@ function AppShell() {
           <Route path="/guias-prepagadas" element={<GuiasPrepagadas />} />
           <Route path="/blog" element={<BlogIndex />} />
           <Route path="/blog/:slug" element={<BlogPost />} />
-          <Route path="/sucursales" element={<Sucursales />} />
           <Route path="/facturacion" element={<Facturacion />} />
           <Route path="/contacto" element={<Contacto />} />
           <Route path="/tienda" element={<Tienda />} />

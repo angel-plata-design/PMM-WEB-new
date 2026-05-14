@@ -10,7 +10,6 @@ const navItems = [
   { to: "/cobertura", label: "Cobertura" },
   { to: "/tienda", label: "Tienda" },
   { to: "/blog", label: "Insights" },
-  { to: "/sucursales", label: "Sucursales" },
 ];
 
 function UserMenu({ user, dark, onLogout }) {
