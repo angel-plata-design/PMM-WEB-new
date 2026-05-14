@@ -115,6 +115,13 @@ export default function Navbar() {
         </nav>
 
         <div className="hidden lg:flex items-center gap-4">
+          <Link
+            to="/cotizador"
+            data-testid="nav-cotizar"
+            className="bg-[#3DAE2B] text-white px-5 py-2.5 rounded-full font-semibold text-[13px] shadow-md shadow-[#3DAE2B]/20 hover:bg-[#339224] hover:shadow-lg hover:shadow-[#3DAE2B]/30 transition-all active:scale-95"
+          >
+            Cotiza Ahora
+          </Link>
           <button
             onClick={() => setCartOpen(true)}
             data-testid="cart-button"
@@ -156,6 +163,13 @@ export default function Navbar() {
 
       {open && (
         <div className="lg:hidden bg-white border-t border-[#E5E5E5] px-6 py-6 space-y-4">
+          <Link
+            to="/cotizador"
+            onClick={() => setOpen(false)}
+            className="block w-full text-center bg-[#3DAE2B] text-white px-5 py-3 rounded-full font-semibold text-base shadow-md shadow-[#3DAE2B]/20"
+          >
+            Cotiza Ahora
+          </Link>
           {navItems.map((item) => (
             <Link key={item.to} to={item.to} className="block text-[#2D2D2D] hover:text-[#1E008D] text-base font-medium">
               {item.label}

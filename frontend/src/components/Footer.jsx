@@ -4,7 +4,7 @@ import { ArrowUpRight, Phone, Mail, MapPin } from "lucide-react";
 
 export default function Footer() {
   return (
-    <footer data-testid="main-footer" className="bg-[#2D2D2D] text-white relative overflow-hidden">
+    <footer data-testid="main-footer" className="bg-[#1E008D] text-white relative overflow-hidden">
       <div className="container-pmm pt-24 pb-12 relative z-10">
         {/* Big CTA */}
         <div className="border-b border-white/10 pb-20 mb-16 flex flex-col md:flex-row md:items-end justify-between gap-8">
