@@ -297,15 +297,27 @@ export default function Home() {
 
             {/* Right: city grid */}
             <div className="flex-1 w-full grid grid-cols-3 gap-3">
-              {CITIES.map((c) => (
-                <div
-                  key={c}
-                  className="border border-gray-200 bg-white rounded-xl p-4 font-mono text-xs uppercase tracking-wider text-[#6B6B6B] hover:text-[#1E008D] hover:border-[#1E008D]/30 hover:shadow-md transition-all"
-                >
-                  <Truck size={14} className="text-[#3DAE2B] mb-2" />
-                  {c}
-                </div>
-              ))}
+              {CITIES.map((c) =>
+                c === "Ciudad de México" ? (
+                  <div
+                    key={c}
+                    className="border-2 border-[#1E008D]/30 bg-[#1E008D]/5 rounded-xl p-4 hover:border-[#1E008D] hover:shadow-md transition-all col-span-1"
+                  >
+                    <Truck size={14} className="text-[#3DAE2B] mb-2" />
+                    <span className="font-display text-sm text-[#1E008D] leading-tight block">
+                      Ciudad de México
+                    </span>
+                  </div>
+                ) : (
+                  <div
+                    key={c}
+                    className="border border-gray-200 bg-white rounded-xl p-4 font-mono text-xs uppercase tracking-wider text-[#6B6B6B] hover:text-[#1E008D] hover:border-[#1E008D]/30 hover:shadow-md transition-all"
+                  >
+                    <Truck size={14} className="text-[#3DAE2B] mb-2" />
+                    {c}
+                  </div>
+                )
+              )}
             </div>
           </div>
         </div>
