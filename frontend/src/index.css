@@ -69,31 +69,31 @@
     letter-spacing: -0.03em;
   }
   .font-body { font-family: 'Inter', system-ui, sans-serif; }
-  .font-mono { font-family: 'JetBrains Mono', monospace; }
+  .font-mono { font-family: 'JetBrains Mono', monospace; } /* kept for data/code contexts only */
 
   .text-overline {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.7rem;
-    letter-spacing: 0.22em;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
     text-transform: uppercase;
     color: #1E008D;
-    font-weight: 500;
+    font-weight: 600;
   }
   .text-overline-light {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.7rem;
-    letter-spacing: 0.22em;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
     text-transform: uppercase;
     color: #3DAE2B;
-    font-weight: 500;
+    font-weight: 600;
   }
   .text-overline-on-dark {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.7rem;
-    letter-spacing: 0.22em;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
     text-transform: uppercase;
     color: #3DAE2B;
-    font-weight: 500;
+    font-weight: 600;
   }
 
   /* Layout */

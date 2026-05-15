@@ -14,7 +14,6 @@ import {
 } from "lucide-react";
 import Seo from "../components/Seo";
 import HomeToolsPanel from "../components/HomeToolsPanel";
-import TrackingWidget from "../components/TrackingWidget";
 import pmmApi from "../lib/api";
 
 const HERO_IMG = "https://images.pexels.com/photos/11087837/pexels-photo-11087837.jpeg";
@@ -191,23 +190,6 @@ export default function Home() {
               <Link to="/servicios/empresas" className="text-[#1E008D] nav-underline text-sm font-semibold uppercase tracking-wider">Servicios para empresas</Link>
               <Link to="/sucursales" className="text-[#1E008D] nav-underline text-sm font-semibold uppercase tracking-wider">Nuestras sucursales</Link>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ─── TRACKING — standalone glassmorphism section ─── */}
-      <section id="rastreo" className="py-20 bg-gray-50">
-        <div className="container-pmm">
-          <div className="max-w-3xl mx-auto text-center mb-12">
-            <div className="text-overline-on-dark mb-3" style={{ color: "#1E008D" }}>Seguimiento en tiempo real</div>
-            <h2 className="text-4xl md:text-5xl font-bold text-[#1E008D] mt-2">Rastrea tu envío al instante</h2>
-            <p className="text-[#2D2D2D]/70 mt-4 text-lg">Ingresa tu número de guía y obtén información actualizada al momento.</p>
-          </div>
-
-          {/* Glassmorphism card */}
-          <div className="max-w-xl mx-auto bg-white/70 backdrop-blur-xl p-8 rounded-3xl shadow-2xl shadow-[#1E008D]/10 border border-white/80">
-            <TrackingWidget inline />
-            <p className="text-center text-sm text-[#2D2D2D]/50 mt-4">También disponible en nuestra app móvil</p>
           </div>
         </div>
       </section>
